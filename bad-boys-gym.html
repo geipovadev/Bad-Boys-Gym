@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bad Boys Gym — Tu mejor versión empieza aquí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#120c0a}
+  body{font-family:'Poppins',sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;color:#f5f1ee;overflow-x:hidden;min-height:100vh}
+  ::selection{background:#D2042D;color:#120c0a}
+  @keyframes mqA{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes mqB{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+  a{text-decoration:none;color:inherit}
+  .btn-pill{display:inline-flex;align-items:center;gap:16px;background:#fff;color:#120c0a;font-weight:600;font-size:16px;padding:8px 8px 8px 28px;border-radius:40px}
+  .btn-pill .icon{width:48px;height:48px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .faq-item{border:1px solid rgba(210,4,45,0.3);border-radius:18px;background:linear-gradient(180deg,#1c1410,#160f0c);overflow:hidden}
+  .faq-header{display:flex;align-items:center;gap:20px;padding:24px 26px;cursor:pointer}
+  .faq-icon{width:38px;height:38px;border-radius:9px;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .25s}
+  .faq-body{overflow:hidden;max-height:0;transition:max-height .3s ease}
+  .faq-item.open .faq-icon{transform:rotate(45deg)}
+  .faq-item.open .faq-body{max-height:300px}
+
+  /* ── Layout classes ── */
+  .site-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:linear-gradient(180deg,rgba(18,12,10,0.95),rgba(18,12,10,0.65));backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.05)}
+  .header-logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
+  .header-nav{display:flex;align-items:center;gap:6px;background:rgba(40,30,26,0.55);border:1px solid rgba(255,255,255,0.06);border-radius:40px;padding:6px}
+  .header-cta{background:#fff;color:#120c0a;font-weight:600;font-size:15px;padding:14px 30px;border-radius:40px;flex-shrink:0}
+
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:101;border:none;background:none}
+  .hamburger span{display:block;width:26px;height:2px;background:#f5f1ee;border-radius:2px;transition:all .3s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  .mobile-nav{display:none;position:fixed;inset:0;background:rgba(18,12,10,0.98);z-index:100;flex-direction:column;align-items:center;justify-content:center;gap:28px;backdrop-filter:blur(14px)}
+  .mobile-nav.open{display:flex}
+  .mobile-nav a{font-family:'Anton',sans-serif;font-size:34px;text-transform:uppercase;color:#f5f1ee;letter-spacing:2px}
+  .mobile-nav a.mobile-cta{background:#D2042D;color:#120c0a;padding:14px 36px;border-radius:40px;font-size:22px;margin-top:8px}
+
+  .hero-section{position:relative;text-align:center;padding:64px 24px 0;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%,#3a1c10 0%,#1a100c 45%,#120c0a 80%)}
+  .hero-title{font-family:'Anton',sans-serif;font-size:96px;line-height:0.96;letter-spacing:1px;max-width:1100px;margin:0 auto;text-transform:uppercase}
+  .hero-subtitle{color:#a99c91;font-size:18px;margin:22px auto 0;max-width:620px}
+  .hero-cards-area{position:relative;max-width:1180px;margin:0 auto;height:560px}
+  .hero-watermark{position:absolute;top:14%;left:50%;transform:translateX(-50%);font-family:'Anton',sans-serif;font-size:300px;line-height:1;color:rgba(255,255,255,0.045);letter-spacing:8px;pointer-events:none;white-space:nowrap;z-index:0}
+  .hero-image{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:520px;height:560px;z-index:1;background:linear-gradient(180deg,rgba(210,4,45,0.08),rgba(18,12,10,0.2));border-radius:16px 16px 0 0;display:flex;align-items:center;justify-content:center}
+  .hero-fade{position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(180deg,transparent,#120c0a);z-index:2;pointer-events:none}
+  .hero-card-left{position:absolute;top:60px;left:0;z-index:3;background:rgba(34,24,19,0.72);border:1px solid rgba(255,255,255,0.08);border-radius:26px;padding:24px 26px;text-align:left;backdrop-filter:blur(6px);min-width:240px}
+  .hero-card-right{position:absolute;top:96px;right:0;z-index:3;display:flex;align-items:center;gap:18px}
+  .hero-cta-row{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:16px;white-space:nowrap}
+
+  .about-section{max-width:1280px;margin:0 auto;padding:90px 48px 40px}
+  .about-title{font-family:'Anton',sans-serif;font-size:46px;line-height:1.12;text-transform:uppercase;max-width:1080px}
+  .about-bottom{display:flex;align-items:flex-end;gap:48px;margin-top:48px;flex-wrap:wrap}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:56px}
+
+  .services-section{max-width:1280px;margin:0 auto;padding:80px 48px}
+  .services-title{font-family:'Anton',sans-serif;font-size:60px;text-align:center;text-transform:uppercase}
+  .service-row{display:grid;grid-template-columns:80px 1fr auto 80px;align-items:center;gap:28px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .service-num{font-family:'Anton',sans-serif;font-size:30px;color:#D2042D}
+  .service-name{font-family:'Anton',sans-serif;font-size:38px;text-transform:uppercase}
+  .service-tags{display:flex;gap:12px;flex-wrap:wrap}
+  .service-arrow{width:64px;height:64px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;justify-self:end;flex-shrink:0}
+
+  .designed-section{max-width:1280px;margin:0 auto;padding:60px 48px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .designed-photos{display:flex;justify-content:center;align-items:flex-end;gap:16px;height:480px}
+  .designed-title{font-family:'Anton',sans-serif;font-size:58px;line-height:1.02;text-transform:uppercase}
+
+  .pricing-section{max-width:1280px;margin:0 auto;padding:80px 48px}
+  .pricing-title{font-family:'Anton',sans-serif;font-size:60px;text-align:center;text-transform:uppercase}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+  .trust-row{display:flex;justify-content:center;gap:48px;margin-top:40px;flex-wrap:wrap}
+
+  .promo-section{max-width:1280px;margin:0 auto;padding:70px 48px 0}
+  .promo-title{font-family:'Anton',sans-serif;font-size:44px;text-align:center;text-transform:uppercase}
+  .promo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:44px}
+
+  .testimonials-section{max-width:1280px;margin:0 auto;padding:80px 48px;text-align:center}
+  .testimonials-title{font-family:'Anton',sans-serif;font-size:60px;text-transform:uppercase}
+  .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px;text-align:left}
+
+  .faq-section{max-width:1280px;margin:0 auto;padding:80px 48px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:64px;align-items:start}
+  .faq-title{font-family:'Anton',sans-serif;font-size:50px;text-transform:uppercase;line-height:1.04}
+  .faq-body-text{padding:0 26px 26px 84px;color:#a99c91;font-size:16px;line-height:1.7}
+
+  .soon-section{max-width:1280px;margin:0 auto;padding:0 48px 80px}
+  .soon-card{position:relative;border-radius:32px;padding:64px 48px;text-align:center;background:radial-gradient(120% 160% at 50% 0,#3a1c10 0%,#1c1410 55%,#120c0a 100%);border:1px solid rgba(210,4,45,0.35)}
+  .soon-title{font-family:'Anton',sans-serif;font-size:52px;text-transform:uppercase;line-height:1.05;margin-top:22px}
+
+  .cta-section{max-width:1280px;margin:0 auto;padding:60px 48px 90px;text-align:center}
+  .cta-title{font-family:'Anton',sans-serif;font-size:80px;text-transform:uppercase;line-height:0.95}
+
+  .site-footer{position:relative;padding:80px 48px 0;overflow:hidden}
+  .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px}
+  .footer-wordmark{font-family:'Anton',sans-serif;font-size:clamp(80px,16vw,280px);line-height:0.8;text-align:center;color:rgba(255,255,255,0.03);letter-spacing:4px;margin-top:60px;user-select:none}
+  .footer-bottom{max-width:1280px;margin:0 auto;border-top:1px solid rgba(255,255,255,0.06);padding:24px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+
+  /* ── Tablet (≤ 900px) ── */
+  @media(max-width:900px){
+    .site-header{padding:16px 24px}
+    .header-nav,.header-cta{display:none}
+    .hamburger{display:flex}
+
+    .hero-section{padding:48px 20px 0}
+    .hero-title{font-size:60px}
+    .hero-subtitle{font-size:16px}
+    .hero-watermark{display:none}
+    .hero-cards-area{height:340px}
+    .hero-image{width:min(420px,85vw);height:340px}
+    .hero-card-left,.hero-card-right{display:none}
+    .hero-cta-row{bottom:16px;gap:10px}
+
+    .about-section{padding:60px 24px 32px}
+    .about-title{font-size:34px}
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+
+    .services-section{padding:60px 24px}
+    .services-title{font-size:42px}
+    .service-row{grid-template-columns:56px 1fr 64px;gap:16px}
+    .service-tags{display:none}
+    .service-name{font-size:28px}
+    .service-num{font-size:22px}
+
+    .designed-section{grid-template-columns:1fr;gap:32px;padding:40px 24px}
+    .designed-photos{height:300px}
+    .designed-title{font-size:42px}
+
+    .pricing-section{padding:60px 24px}
+    .pricing-title{font-size:42px}
+    .pricing-grid{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto}
+
+    .promo-section{padding:50px 24px 0}
+    .promo-title{font-size:32px}
+    .promo-grid{grid-template-columns:repeat(2,1fr)}
+
+    .testimonials-section{padding:60px 24px}
+    .testimonials-title{font-size:42px}
+    .testimonials-grid{grid-template-columns:1fr}
+
+    .faq-section{grid-template-columns:1fr;gap:32px;padding:60px 24px}
+    .faq-title{font-size:38px}
+
+    .soon-section{padding:0 24px 60px}
+    .soon-card{padding:48px 28px;border-radius:24px}
+    .soon-title{font-size:36px}
+
+    .cta-section{padding:48px 24px 60px}
+    .cta-title{font-size:52px}
+
+    .site-footer{padding:60px 24px 0}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  }
+
+  /* ── Mobile (≤ 500px) ── */
+  @media(max-width:500px){
+    .hero-section{padding:36px 16px 0}
+    .hero-title{font-size:42px;letter-spacing:0}
+    .hero-subtitle{font-size:15px}
+    .hero-cards-area{height:280px}
+    .hero-image{width:90vw;height:280px}
+    .hero-cta-row{flex-direction:column;align-items:center;gap:12px;bottom:12px;white-space:normal;width:90vw}
+    .hero-cta-row a{width:100%;justify-content:center}
+
+    .about-section{padding:48px 16px 24px}
+    .about-title{font-size:26px}
+    .about-bottom{gap:28px}
+    .stats-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+
+    .services-section{padding:48px 16px}
+    .services-title{font-size:32px}
+    .service-row{grid-template-columns:44px 1fr 54px;gap:10px;padding:24px 0}
+    .service-name{font-size:20px}
+    .service-arrow{width:52px;height:52px}
+
+    .designed-section{padding:36px 16px}
+    .designed-photos{height:220px;gap:10px}
+    .designed-title{font-size:32px}
+
+    .pricing-section{padding:48px 16px}
+    .pricing-title{font-size:32px}
+    .pricing-grid{max-width:100%}
+    .trust-row{gap:20px}
+
+    .promo-section{padding:40px 16px 0}
+    .promo-title{font-size:26px}
+    .promo-grid{grid-template-columns:1fr}
+
+    .testimonials-section{padding:48px 16px}
+    .testimonials-title{font-size:32px}
+
+    .faq-section{padding:48px 16px}
+    .faq-title{font-size:30px}
+    .faq-body-text{padding:0 16px 20px 72px}
+    .faq-header{padding:18px 16px;gap:14px}
+    .faq-item.open .faq-body{max-height:400px}
+
+    .soon-section{padding:0 16px 48px}
+    .soon-card{padding:36px 20px}
+    .soon-title{font-size:28px}
+
+    .cta-section{padding:40px 16px 48px}
+    .cta-title{font-size:36px}
+
+    .site-footer{padding:48px 16px 0}
+    .footer-grid{grid-template-columns:1fr;gap:36px}
+    .footer-wordmark{margin-top:40px}
+
+    .btn-pill{font-size:14px;padding:8px 8px 8px 20px}
+    .btn-pill .icon{width:40px;height:40px}
+
+    .reg-modal-card{padding:28px 22px}
+  }
+
+  /* ── Modal de registro ── */
+  .reg-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+  .reg-modal.open{display:flex}
+  .reg-modal-backdrop{position:absolute;inset:0;background:rgba(8,5,4,0.8);backdrop-filter:blur(4px)}
+  .reg-modal-card{position:relative;background:linear-gradient(180deg,#241a15,#160f0c);border:1px solid rgba(210,4,45,0.3);border-radius:24px;padding:40px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto}
+  .reg-modal-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.08);border:none;color:#f5f1ee;font-size:16px;cursor:pointer}
+  .reg-input{width:100%;background:#1c1410;border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 16px;color:#f5f1ee;font-family:'Poppins',sans-serif;font-size:15px}
+  .reg-input::placeholder{color:#7a6d63}
+  .reg-pay-row{display:flex;gap:12px}
+  .reg-pay-option{flex:1;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px 14px;font-size:14px;cursor:pointer;color:#cfc4bb}
+  .reg-pay-option:has(input:checked){border-color:#D2042D;background:rgba(210,4,45,0.08);color:#f5f1ee}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="header-logo">
+    <img src="logo.jpeg" alt="Bad Boys Gym" style="width:42px;height:42px;border-radius:13px;object-fit:cover;display:block">
+    <span style="font-family:'Anton',sans-serif;font-size:24px;letter-spacing:1px">BAD BOYS GYM</span>
+  </div>
+  <nav class="header-nav">
+    <a href="#" style="color:#f5f1ee;font-size:15px;font-weight:500;padding:11px 22px;border-radius:30px;background:rgba(60,46,40,0.6)">Inicio</a>
+    <a href="#servicios" style="color:#cfc4bb;font-size:15px;font-weight:500;padding:11px 22px;border-radius:30px">Servicios</a>
+    <a href="#nosotros" style="color:#cfc4bb;font-size:15px;font-weight:500;padding:11px 22px;border-radius:30px">Nosotros</a>
+    <a href="#planes" style="color:#cfc4bb;font-size:15px;font-weight:500;padding:11px 22px;border-radius:30px">Planes</a>
+    <a href="#contacto" style="color:#cfc4bb;font-size:15px;font-weight:500;padding:11px 22px;border-radius:30px">Contacto</a>
+  </nav>
+  <a href="#planes" class="header-cta">Ver Membresías</a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Mobile nav overlay -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#" onclick="toggleMenu()">Inicio</a>
+  <a href="#servicios" onclick="toggleMenu()">Servicios</a>
+  <a href="#nosotros" onclick="toggleMenu()">Nosotros</a>
+  <a href="#planes" onclick="toggleMenu()">Planes</a>
+  <a href="#contacto" onclick="toggleMenu()">Contacto</a>
+  <a href="#planes" class="mobile-cta" onclick="toggleMenu()">Ver Membresías</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero-section">
+  <h1 class="hero-title">Tu mejor versión<br>no es un sueño.<br>Es un plan.</h1>
+  <p class="hero-subtitle">En Bad Boys Gym entrenamos a personas de todas las edades con programas 100% personalizados para que veas resultados increíbles en poco tiempo. Sin excusas. Solo resultados.</p>
+
+  <div class="hero-cards-area">
+    <div class="hero-watermark">FITNESS</div>
+
+    <div class="hero-image"></div>
+
+    <div class="hero-fade"></div>
+
+    <!-- left floating card -->
+    <div class="hero-card-left">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font-family:'Anton',sans-serif;font-size:34px">+100</span>
+        <span style="font-size:18px;font-weight:500;line-height:1.1">Miembros<br>Activos</span>
+      </div>
+      <div style="display:flex;align-items:center;margin-top:16px">
+        <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#c98a5e,#7a4a2e);border:2px solid #221813"></div>
+        <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#8a5a3a,#3a2418);border:2px solid #221813;margin-left:-14px"></div>
+        <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#b07a52,#5a3a22);border:2px solid #221813;margin-left:-14px"></div>
+        <div style="width:46px;height:46px;border-radius:50%;background:#D2042D;border:2px solid #120c0a;margin-left:-12px;display:flex;align-items:center;justify-content:center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- right floating rating -->
+    <div class="hero-card-right">
+      <div style="width:96px;height:48px;border-top-left-radius:96px;border-top-right-radius:96px;background:linear-gradient(180deg,#5a2c14,#2a1810);display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;position:relative">
+        <div style="width:60px;height:60px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;position:absolute;bottom:-6px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#120c0a"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="text-align:left">
+        <div style="display:flex;align-items:flex-start"><span style="font-family:'Anton',sans-serif;font-size:48px;line-height:0.9">84%</span><span style="color:#D2042D;font-size:22px;margin-left:4px">★</span></div>
+        <div style="color:#cfc4bb;font-size:15px;font-weight:500">Renuevan</div>
+      </div>
+    </div>
+
+    <!-- CTA row -->
+    <div class="hero-cta-row">
+      <a href="#planes" class="btn-pill">Quiero empezar hoy<span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<section style="position:relative;height:300px;overflow:hidden;margin:0;display:flex;align-items:center">
+  <div style="position:absolute;left:-5%;width:110%;transform:rotate(-5deg);background:#1d130f;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:18px 0;overflow:hidden">
+    <div style="display:flex;width:max-content;animation:mqA 28s linear infinite;font-family:'Anton',sans-serif;font-size:clamp(22px,4vw,40px);color:#f5f1ee;text-transform:uppercase;letter-spacing:2px;white-space:nowrap">
+      <span>ENTRENAMIENTO PERSONALIZADO ✱&nbsp; RESULTADOS REALES ✱&nbsp; TODAS LAS EDADES ✱&nbsp; ENTRENAMIENTO PERSONALIZADO ✱&nbsp; RESULTADOS REALES ✱&nbsp; TODAS LAS EDADES ✱&nbsp; ENTRENAMIENTO PERSONALIZADO ✱&nbsp; RESULTADOS REALES ✱&nbsp; TODAS LAS EDADES ✱&nbsp; </span>
+      <span>ENTRENAMIENTO PERSONALIZADO ✱&nbsp; RESULTADOS REALES ✱&nbsp; TODAS LAS EDADES ✱&nbsp; ENTRENAMIENTO PERSONALIZADO ✱&nbsp; RESULTADOS REALES ✱&nbsp; TODAS LAS EDADES ✱&nbsp; ENTRENAMIENTO PERSONALIZADO ✱&nbsp; RESULTADOS REALES ✱&nbsp; TODAS LAS EDADES ✱&nbsp; </span>
+    </div>
+  </div>
+  <div style="position:absolute;left:-5%;width:110%;transform:rotate(5deg);background:#D2042D;padding:18px 0;overflow:hidden">
+    <div style="display:flex;width:max-content;animation:mqB 24s linear infinite;font-family:'Anton',sans-serif;font-size:clamp(22px,4vw,40px);color:#120c0a;text-transform:uppercase;letter-spacing:2px;white-space:nowrap">
+      <span>SIN EXCUSAS ✱&nbsp; SOLO RESULTADOS ✱&nbsp; BAD BOYS GYM ✱&nbsp; SIN EXCUSAS ✱&nbsp; SOLO RESULTADOS ✱&nbsp; BAD BOYS GYM ✱&nbsp; SIN EXCUSAS ✱&nbsp; SOLO RESULTADOS ✱&nbsp; BAD BOYS GYM ✱&nbsp; </span>
+      <span>SIN EXCUSAS ✱&nbsp; SOLO RESULTADOS ✱&nbsp; BAD BOYS GYM ✱&nbsp; SIN EXCUSAS ✱&nbsp; SOLO RESULTADOS ✱&nbsp; BAD BOYS GYM ✱&nbsp; SIN EXCUSAS ✱&nbsp; SOLO RESULTADOS ✱&nbsp; BAD BOYS GYM ✱&nbsp; </span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="nosotros" class="about-section">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+    <span style="width:8px;height:8px;background:#D2042D;border-radius:50%"></span>
+    <span style="color:#D2042D;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase">Sobre Bad Boys Gym</span>
+  </div>
+  <h2 class="about-title">Somos un gimnasio orientado a resultados, dedicado a ayudarte a entrenar mejor y vivir más fuerte. <span style="color:#5a4a40">Hacemos que el fitness sea alcanzable para todos.</span></h2>
+
+  <div class="about-bottom">
+    <div style="position:relative;width:200px;height:120px;flex-shrink:0">
+      <div style="position:absolute;top:0;left:0;width:200px;height:200px;border-radius:50%;background:radial-gradient(120% 120% at 50% 0,#D2042D 0%,#7a3014 60%,transparent 75%);clip-path:inset(0 0 40% 0)"></div>
+      <div style="position:absolute;top:14px;left:0;width:200px;text-align:center">
+        <div style="font-family:'Anton',sans-serif;font-size:64px;line-height:1">3+</div>
+        <div style="font-weight:600;font-size:15px;line-height:1.05">Años de<br>Experiencia</div>
+      </div>
+    </div>
+    <p style="color:#a99c91;font-size:16px;line-height:1.7;max-width:440px;flex:1;min-width:260px">No importa tu edad, tu punto de partida ni tu experiencia previa. En Bad Boys Gym diseñamos un programa hecho exactamente para ti, para que cada sesión cuente y los resultados lleguen más rápido de lo que imaginas.</p>
+    <a href="#contacto" class="btn-pill" style="flex-shrink:0">Contáctanos<span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+  </div>
+
+  <div class="stats-grid">
+    <div style="border:1px solid rgba(210,4,45,0.35);border-radius:200px;padding:40px 20px;text-align:center;background:radial-gradient(120% 120% at 50% 0,rgba(60,40,30,0.5),rgba(30,20,16,0.2))">
+      <div style="display:inline-flex;align-items:flex-start"><span style="font-family:'Anton',sans-serif;font-size:48px;line-height:0.9">+100</span><span style="color:#D2042D;font-size:18px;margin-left:3px">★</span></div>
+      <div style="color:#cfc4bb;font-size:16px;margin-top:6px">Miembros Activos</div>
+    </div>
+    <div style="border:1px solid rgba(210,4,45,0.35);border-radius:200px;padding:40px 20px;text-align:center;background:radial-gradient(120% 120% at 50% 0,rgba(60,40,30,0.5),rgba(30,20,16,0.2))">
+      <div style="display:inline-flex;align-items:flex-start"><span style="font-family:'Anton',sans-serif;font-size:48px;line-height:0.9">84%</span><span style="color:#D2042D;font-size:18px;margin-left:3px">★</span></div>
+      <div style="color:#cfc4bb;font-size:16px;margin-top:6px">Renuevan membresía</div>
+    </div>
+    <div style="border:1px solid rgba(210,4,45,0.35);border-radius:200px;padding:40px 20px;text-align:center;background:radial-gradient(120% 120% at 50% 0,rgba(60,40,30,0.5),rgba(30,20,16,0.2))">
+      <div style="display:inline-flex;align-items:flex-start"><span style="font-family:'Anton',sans-serif;font-size:48px;line-height:0.9">3</span><span style="color:#D2042D;font-size:18px;margin-left:3px">★</span></div>
+      <div style="color:#cfc4bb;font-size:16px;margin-top:6px">Entrenadores Certificados</div>
+    </div>
+    <div style="border:1px solid rgba(210,4,45,0.35);border-radius:200px;padding:40px 20px;text-align:center;background:radial-gradient(120% 120% at 50% 0,rgba(60,40,30,0.5),rgba(30,20,16,0.2))">
+      <div style="display:inline-flex;align-items:flex-start"><span style="font-family:'Anton',sans-serif;font-size:48px;line-height:0.9">Todas</span></div>
+      <div style="color:#cfc4bb;font-size:16px;margin-top:6px">Las Edades</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="servicios" class="services-section">
+  <h2 class="services-title">Eleva Tu Experiencia de Fitness</h2>
+  <p style="color:#a99c91;text-align:center;font-size:17px;margin-top:14px">Programas personalizados, coaches expertos y métodos probados para que logres resultados reales.</p>
+
+  <div style="margin-top:56px">
+    <div class="service-row">
+      <span class="service-num">01</span>
+      <span class="service-name">Entrenamiento Personal</span>
+      <div class="service-tags">
+        <span style="border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:11px 22px;font-size:15px;color:#cfc4bb">Transformación</span>
+        <span style="border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:11px 22px;font-size:15px;color:#cfc4bb">Vida Saludable</span>
+      </div>
+      <a href="#planes" class="service-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+    </div>
+    <div class="service-row">
+      <span class="service-num">02</span>
+      <span class="service-name">Entrenamiento de Fuerza</span>
+      <div class="service-tags">
+        <span style="border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:11px 22px;font-size:15px;color:#cfc4bb">Movilidad</span>
+        <span style="border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:11px 22px;font-size:15px;color:#cfc4bb">Core &amp; Potencia</span>
+      </div>
+      <a href="#planes" class="service-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+    </div>
+    <div class="service-row">
+      <span class="service-num">03</span>
+      <span class="service-name">Acondicionamiento Físico</span>
+      <div class="service-tags">
+        <span style="border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:11px 22px;font-size:15px;color:#cfc4bb">Cardio</span>
+        <span style="border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:11px 22px;font-size:15px;color:#cfc4bb">Resistencia</span>
+      </div>
+      <a href="#planes" class="service-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+    </div>
+    <div class="service-row">
+      <span class="service-num">04</span>
+      <span class="service-name">Transformación Corporal</span>
+      <div class="service-tags">
+        <span style="border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:11px 22px;font-size:15px;color:#cfc4bb">Coaching Personal</span>
+        <span style="border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:11px 22px;font-size:15px;color:#cfc4bb">Plan 1 a 1</span>
+      </div>
+      <a href="#planes" class="service-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESIGNED FOR THOSE ============ -->
+<section class="designed-section">
+  <div class="designed-photos">
+    <div style="height:82%;aspect-ratio:170/320;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);flex-shrink:0">
+      <img src="imagen-1.jpeg" alt="Bad Boys Gym" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+    </div>
+    <div style="height:100%;aspect-ratio:190/420;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);flex-shrink:0">
+      <img src="imagen-2.jpeg" alt="Bad Boys Gym" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+    </div>
+    <div style="height:90%;aspect-ratio:170/360;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);flex-shrink:0">
+      <img src="imagen-3.jpeg" alt="Bad Boys Gym" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+    </div>
+  </div>
+  <div>
+    <h2 class="designed-title">Diseñado para quienes esperan más de sí mismos</h2>
+    <p style="color:#a99c91;font-size:16px;line-height:1.75;margin-top:26px;max-width:480px">Combinamos innovación, experiencia y dedicación personalizada para entregarte resultados sin igual. Profesionales certificados comprometidos con tu transformación, adaptando cada entrenamiento a tus metas, tu estilo de vida y las condiciones de tu cuerpo.</p>
+    <a href="#contacto" class="btn-pill" style="margin-top:32px">Contáctanos<span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="planes" class="pricing-section">
+  <h2 class="pricing-title">Elige Tu Plan Perfecto</h2>
+  <p style="color:#a99c91;text-align:center;font-size:17px;margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto">Sin contratos trampa. Sin letras pequeñas. Solo entrenamiento de verdad diseñado para tus metas.</p>
+
+  <div class="pricing-grid">
+
+    <!-- Plan Semanal -->
+    <div style="position:relative;border-radius:28px;padding:36px 32px;background:linear-gradient(180deg,#2a1f1a,#1c1410);border:1px solid rgba(255,255,255,0.08)">
+      <div style="position:absolute;top:0;right:0;background:#120c0a;border-bottom-left-radius:20px;padding:10px 22px;font-size:14px;color:#cfc4bb">Corto plazo</div>
+      <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:0.5px">Plan Semanal</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:18px">
+        <span style="font-family:'Anton',sans-serif;font-size:56px;line-height:1">₡8.000</span>
+      </div>
+      <p style="color:#a99c91;font-size:15px;line-height:1.6;margin-top:18px">Ideal para probar el gym o entrenar unos días sin compromiso.</p>
+      <div style="font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;margin-top:30px;letter-spacing:0.5px">Qué Incluye</div>
+      <div style="display:flex;flex-direction:column;gap:18px;margin-top:20px">
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Acceso ilimitado al Gym</span></div>
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Uso de todo el equipo</span></div>
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Asesoría personalizada</span></div>
+      </div>
+      <a href="javascript:void(0)" onclick="abrirRegistro('Plan Semanal')" style="margin-top:34px;font-weight:600;font-size:16px;padding:8px 8px 8px 28px;border-radius:40px;display:flex;align-items:center;justify-content:space-between;background:transparent;color:#f5f1ee;border:1px solid rgba(255,255,255,0.2)">Elegir Plan<span style="width:46px;height:46px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+    </div>
+
+    <!-- Plan Mensual (Recomendado) -->
+    <div style="position:relative;border-radius:28px;padding:36px 32px;background:linear-gradient(180deg,#2a1f1a,#1c1410);border:1px solid #D2042D">
+      <div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);background:#D2042D;color:#120c0a;font-weight:700;font-size:13px;letter-spacing:1px;padding:8px 22px;border-radius:30px;text-transform:uppercase;white-space:nowrap">Recomendado</div>
+      <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:0.5px;margin-top:8px">Plan Mensual</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:18px">
+        <span style="font-family:'Anton',sans-serif;font-size:56px;line-height:1">₡15.000</span>
+      </div>
+      <p style="color:#a99c91;font-size:15px;line-height:1.6;margin-top:18px">El plan más completo para mantener tu rutina constante y ver resultados reales.</p>
+      <div style="font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;margin-top:30px;letter-spacing:0.5px">Qué Incluye</div>
+      <div style="display:flex;flex-direction:column;gap:18px;margin-top:20px">
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Acceso ilimitado al Gym</span></div>
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Uso de todo el equipo</span></div>
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Asesoría personalizada</span></div>
+      </div>
+      <a href="javascript:void(0)" onclick="abrirRegistro('Plan Mensual')" style="margin-top:34px;font-weight:600;font-size:16px;padding:8px 8px 8px 28px;border-radius:40px;display:flex;align-items:center;justify-content:space-between;background:#fff;color:#120c0a;border:1px solid #fff">Elegir Plan<span style="width:46px;height:46px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+    </div>
+
+    <!-- Plan Quincenal -->
+    <div style="position:relative;border-radius:28px;padding:36px 32px;background:linear-gradient(180deg,#2a1f1a,#1c1410);border:1px solid rgba(255,255,255,0.08)">
+      <div style="position:absolute;top:0;right:0;background:#120c0a;border-bottom-left-radius:20px;padding:10px 22px;font-size:14px;color:#cfc4bb">Flexible</div>
+      <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:0.5px">Plan Quincenal</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:18px">
+        <span style="font-family:'Anton',sans-serif;font-size:56px;line-height:1">₡12.000</span>
+      </div>
+      <p style="color:#a99c91;font-size:15px;line-height:1.6;margin-top:18px">Un punto intermedio con total flexibilidad para tu horario.</p>
+      <div style="font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;margin-top:30px;letter-spacing:0.5px">Qué Incluye</div>
+      <div style="display:flex;flex-direction:column;gap:18px;margin-top:20px">
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Acceso ilimitado al Gym</span></div>
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Uso de todo el equipo</span></div>
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:26px;height:26px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:16px">Asesoría personalizada</span></div>
+      </div>
+      <a href="javascript:void(0)" onclick="abrirRegistro('Plan Quincenal')" style="margin-top:34px;font-weight:600;font-size:16px;padding:8px 8px 8px 28px;border-radius:40px;display:flex;align-items:center;justify-content:space-between;background:transparent;color:#f5f1ee;border:1px solid rgba(255,255,255,0.2)">Elegir Plan<span style="width:46px;height:46px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+    </div>
+  </div>
+
+  <!-- Trust signals -->
+  <div class="trust-row">
+    <div style="display:flex;align-items:center;gap:10px;color:#cfc4bb;font-size:15px">
+      <span style="color:#D2042D">🔒</span> Sin contratos. Cancela cuando quieras.
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;color:#cfc4bb;font-size:15px">
+      <span style="color:#D2042D">🎁</span> Primera sesión gratis, conozca tu gimnasio.
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;color:#cfc4bb;font-size:15px">
+      <span style="color:#D2042D">📞</span> ¿Dudas? Habla con nosotros antes de decidir.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROMOCIONES ============ -->
+<section class="promo-section">
+  <h2 class="promo-title">Promociones</h2>
+  <p style="color:#a99c91;text-align:center;font-size:16px;margin-top:14px;max-width:560px;margin-left:auto;margin-right:auto">Tarifas especiales para estudiantes, parejas y sesiones individuales.</p>
+
+  <div class="promo-grid">
+
+    <!-- Estudiantes -->
+    <div style="border-radius:22px;padding:28px 24px;background:linear-gradient(180deg,#2a1f1a,#1c1410);border:1px solid rgba(255,255,255,0.08)">
+      <div style="font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:0.5px">Estudiantes</div>
+      <div style="color:#D2042D;font-size:13px;font-weight:600;margin-top:2px">Colegiales</div>
+      <div style="font-family:'Anton',sans-serif;font-size:38px;line-height:1;margin-top:16px">₡13.000</div>
+      <p style="color:#a99c91;font-size:14px;line-height:1.6;margin-top:14px">Tarifa especial para estudiantes colegiales con carné vigente.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:22px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Acceso ilimitado al Gym</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Uso de todo el equipo</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Asesoría personalizada</span></div>
+      </div>
+      <a href="javascript:void(0)" onclick="abrirRegistro('Estudiantes (Colegiales)')" style="margin-top:20px;font-weight:600;font-size:14px;padding:12px;border-radius:30px;display:block;text-align:center;background:transparent;color:#f5f1ee;border:1px solid rgba(255,255,255,0.2)">Elegir Plan</a>
+    </div>
+
+    <!-- Universitarios -->
+    <div style="border-radius:22px;padding:28px 24px;background:linear-gradient(180deg,#2a1f1a,#1c1410);border:1px solid rgba(255,255,255,0.08)">
+      <div style="font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:0.5px">Universitarios</div>
+      <div style="color:#D2042D;font-size:13px;font-weight:600;margin-top:2px">No asalariados</div>
+      <div style="font-family:'Anton',sans-serif;font-size:38px;line-height:1;margin-top:16px">₡14.000</div>
+      <p style="color:#a99c91;font-size:14px;line-height:1.6;margin-top:14px">Tarifa especial para universitarios que no reciben salario.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:22px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Acceso ilimitado al Gym</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Uso de todo el equipo</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Asesoría personalizada</span></div>
+      </div>
+      <a href="javascript:void(0)" onclick="abrirRegistro('Universitarios (No asalariados)')" style="margin-top:20px;font-weight:600;font-size:14px;padding:12px;border-radius:30px;display:block;text-align:center;background:transparent;color:#f5f1ee;border:1px solid rgba(255,255,255,0.2)">Elegir Plan</a>
+    </div>
+
+    <!-- Parejas -->
+    <div style="border-radius:22px;padding:28px 24px;background:linear-gradient(180deg,#2a1f1a,#1c1410);border:1px solid rgba(255,255,255,0.08)">
+      <div style="font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:0.5px">Parejas</div>
+      <div style="color:#D2042D;font-size:13px;font-weight:600;margin-top:2px">Esposos, Novios</div>
+      <div style="font-family:'Anton',sans-serif;font-size:38px;line-height:1;margin-top:16px">₡27.000</div>
+      <p style="color:#a99c91;font-size:14px;line-height:1.6;margin-top:14px">Entrena junto a tu pareja y comparte la membresía mensual.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:22px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Acceso ilimitado al Gym</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Uso de todo el equipo</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Asesoría personalizada</span></div>
+      </div>
+      <a href="javascript:void(0)" onclick="abrirRegistro('Parejas (Esposos, Novios)')" style="margin-top:20px;font-weight:600;font-size:14px;padding:12px;border-radius:30px;display:block;text-align:center;background:transparent;color:#f5f1ee;border:1px solid rgba(255,255,255,0.2)">Elegir Plan</a>
+    </div>
+
+    <!-- Sesión -->
+    <div style="border-radius:22px;padding:28px 24px;background:linear-gradient(180deg,#2a1f1a,#1c1410);border:1px solid rgba(255,255,255,0.08)">
+      <div style="font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:0.5px">Sesión</div>
+      <div style="color:#D2042D;font-size:13px;font-weight:600;margin-top:2px">Día individual</div>
+      <div style="font-family:'Anton',sans-serif;font-size:38px;line-height:1;margin-top:16px">₡2.500</div>
+      <p style="color:#a99c91;font-size:14px;line-height:1.6;margin-top:14px">Perfecta para probar el gym o entrenar por un día puntual.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:22px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Acceso ilimitado al Gym</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Uso de todo el equipo</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="font-size:14px">Asesoría personalizada</span></div>
+      </div>
+      <a href="javascript:void(0)" onclick="abrirRegistro('Sesión (día individual)')" style="margin-top:20px;font-weight:600;font-size:14px;padding:12px;border-radius:30px;display:block;text-align:center;background:transparent;color:#f5f1ee;border:1px solid rgba(255,255,255,0.2)">Elegir Plan</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="testimonials-section">
+  <h2 class="testimonials-title">Lo Que Dicen Nuestros Miembros</h2>
+  <p style="color:#a99c91;font-size:17px;margin-top:14px;max-width:560px;margin-left:auto;margin-right:auto">Personas reales que transformaron su cuerpo, ganaron confianza y alcanzaron sus metas con nosotros.</p>
+
+  <div class="testimonials-grid">
+    <div style="border-radius:24px;padding:34px 36px;background:linear-gradient(180deg,#2c211b,#1a120f);border:1px solid rgba(255,255,255,0.09)">
+      <div style="font-size:20px;font-weight:600">Carlos M.</div>
+      <div style="color:#D2042D;font-size:15px;font-weight:500;margin-top:2px">42 años · Bajó 12 kilos en 3 meses</div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:22px"><span style="font-family:'Anton',sans-serif;font-size:44px;line-height:0.9">5.0</span><span style="color:#D2042D;font-size:22px;letter-spacing:3px">★★★★★</span></div>
+      <p style="color:#b5a99f;font-size:16px;line-height:1.7;margin-top:18px">Llegué al gym sin haber entrenado en años. Pensé que era muy tarde para mí. El equipo de Bad Boys me hizo un plan perfecto para mi edad y mi ritmo. Hoy me siento mejor que a los 30.</p>
+    </div>
+    <div style="border-radius:24px;padding:34px 36px;background:linear-gradient(180deg,#2c211b,#1a120f);border:1px solid rgba(255,255,255,0.09)">
+      <div style="font-size:20px;font-weight:600">Valeria R.</div>
+      <div style="color:#D2042D;font-size:15px;font-weight:500;margin-top:2px">28 años · Gané músculo y perdí grasa</div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:22px"><span style="font-family:'Anton',sans-serif;font-size:44px;line-height:0.9">5.0</span><span style="color:#D2042D;font-size:22px;letter-spacing:3px">★★★★★</span></div>
+      <p style="color:#b5a99f;font-size:16px;line-height:1.7;margin-top:18px">Fui a muchos gyms antes y siempre dejé. Acá es diferente. El seguimiento es constante, te explican todo y ves el progreso semana a semana. Ya no me imagino sin Bad Boys Gym.</p>
+    </div>
+    <div style="border-radius:24px;padding:34px 36px;background:linear-gradient(180deg,#2c211b,#1a120f);border:1px solid rgba(255,255,255,0.09)">
+      <div style="font-size:20px;font-weight:600">Roberto S.</div>
+      <div style="color:#D2042D;font-size:15px;font-weight:500;margin-top:2px">61 años · Mejoró presión y dejó 2 medicamentos</div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:22px"><span style="font-family:'Anton',sans-serif;font-size:44px;line-height:0.9">5.0</span><span style="color:#D2042D;font-size:22px;letter-spacing:3px">★★★★★</span></div>
+      <p style="color:#b5a99f;font-size:16px;line-height:1.7;margin-top:18px">Mi médico me recomendó hacer ejercicio. Tenía miedo de lastimarme. En Bad Boys Gym adaptaron cada ejercicio para mí. Ha sido la mejor decisión de mi vida.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq-section">
+  <div>
+    <h2 class="faq-title">Preguntas Frecuentes</h2>
+    <p style="color:#a99c91;font-size:16px;line-height:1.7;margin-top:22px;max-width:360px">Resolvemos tus dudas antes de que des el primer paso. Si tienes alguna más, escríbenos.</p>
+    <a href="#contacto" class="btn-pill" style="margin-top:32px;font-size:15px;padding:8px 8px 8px 22px">Habla con nosotros<span class="icon" style="width:42px;height:42px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:18px">
+
+    <div class="faq-item">
+      <div class="faq-header" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span class="faq-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+        <span style="font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase">¿Necesito experiencia previa para unirme?</span>
+      </div>
+      <div class="faq-body"><p class="faq-body-text">Para nada. Recibimos personas de todos los niveles, desde principiantes absolutos hasta atletas con años de entrenamiento. Tu evaluación inicial nos permite diseñar un programa adecuado para donde estás hoy.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-header" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span class="faq-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+        <span style="font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase">¿Es apto para personas mayores?</span>
+      </div>
+      <div class="faq-body"><p class="faq-body-text">Sí, especialmente. Trabajamos con personas de todas las edades y adaptamos cada ejercicio a las capacidades y limitaciones de cada persona. Si tienes alguna condición médica, ajustamos el plan con tu médico.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-header" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span class="faq-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+        <span style="font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase">¿En cuánto tiempo veo resultados?</span>
+      </div>
+      <div class="faq-body"><p class="faq-body-text">La mayoría de nuestros miembros sienten una diferencia en las primeras 2–3 semanas. Los cambios visibles suelen llegar entre la semana 4 y 8, dependiendo de la frecuencia y el plan que sigas.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-header" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span class="faq-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+        <span style="font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase">¿Puedo cambiar de plan después?</span>
+      </div>
+      <div class="faq-body"><p class="faq-body-text">Sí, en cualquier momento. Si empiezas con Básico y quieres subir a Pro o Elite, lo hacemos sin problemas. También puedes bajar si tu situación cambia. Sin penalizaciones.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-header" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span class="faq-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+        <span style="font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase">¿Qué pasa si no puedo ir un mes?</span>
+      </div>
+      <div class="faq-body"><p class="faq-body-text">Entendemos que la vida pasa. Tenemos opciones de congelamiento de membresía para que no pierdas tu plan cuando no puedas entrenar por viaje, enfermedad u otras razones.</p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PRÓXIMAMENTE ============ -->
+<section class="soon-section">
+  <div class="soon-card">
+    <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(210,4,45,0.12);border:1px solid rgba(210,4,45,0.3);border-radius:40px;padding:8px 20px">
+      <span style="width:8px;height:8px;background:#D2042D;border-radius:50%"></span>
+      <span style="color:#D2042D;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase">Próximamente</span>
+    </div>
+    <h2 class="soon-title">Nueva sucursal<br>en Palmitas</h2>
+    <p style="color:#a99c91;font-size:17px;line-height:1.7;max-width:560px;margin:22px auto 0">Bad Boys Gym sigue creciendo. Muy pronto abriremos una nueva sede en Palmitas para que entrenes más cerca de casa.</p>
+    <a href="#contacto" class="btn-pill" style="margin-top:32px">Quiero que me avisen<span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section class="cta-section">
+  <h2 class="cta-title">Tu mejor versión<br>te está esperando.</h2>
+  <p style="color:#a99c91;font-size:18px;margin:28px auto 0;max-width:540px;line-height:1.7">Cada día que esperas es un día que no estás avanzando. El momento perfecto no existe — pero el momento correcto es ahora.</p>
+  <div style="margin-top:40px">
+    <a href="#contacto" class="btn-pill" style="font-size:17px;padding:12px 12px 12px 36px">Empezar hoy con una sesión gratis<span class="icon" style="width:52px;height:52px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+  </div>
+  <p style="color:#5a4a40;font-size:15px;margin-top:20px">Sin tarjeta de crédito. Sin compromisos. Solo resultados.</p>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contacto" class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <img src="logo.jpeg" alt="Bad Boys Gym" style="width:42px;height:42px;border-radius:13px;object-fit:cover;display:block">
+        <span style="font-family:'Anton',sans-serif;font-size:22px;letter-spacing:1px">BAD BOYS GYM</span>
+      </div>
+      <p style="color:#6f6258;font-size:14px;line-height:1.7;margin-top:20px;max-width:260px">Diseñado para los que no se rinden. Entrenamiento personalizado para todas las edades.</p>
+      <div style="display:flex;gap:12px;margin-top:40px">
+        <a href="#" style="width:40px;height:40px;border-radius:50%;background:rgba(60,46,40,0.6);display:flex;align-items:center;justify-content:center;color:#cfc4bb;font-size:15px">f</a>
+        <a href="#" style="width:40px;height:40px;border-radius:50%;background:rgba(60,46,40,0.6);display:flex;align-items:center;justify-content:center;color:#cfc4bb;font-size:14px">◉</a>
+        <a href="#" style="width:40px;height:40px;border-radius:50%;background:rgba(60,46,40,0.6);display:flex;align-items:center;justify-content:center;color:#cfc4bb;font-size:14px">𝕏</a>
+        <a href="#" style="width:40px;height:40px;border-radius:50%;background:rgba(60,46,40,0.6);display:flex;align-items:center;justify-content:center;color:#cfc4bb;font-size:13px">▶</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:1px">Menú</div>
+      <div style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
+        <a href="#" style="color:#cfc4bb">Inicio</a>
+        <a href="#nosotros" style="color:#cfc4bb">Nosotros</a>
+        <a href="#servicios" style="color:#cfc4bb">Servicios</a>
+        <a href="#planes" style="color:#cfc4bb">Planes</a>
+        <a href="#contacto" style="color:#cfc4bb">Contacto</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:1px">Horario</div>
+      <div style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
+        <span>Lun – Vie<br><span style="color:#f5f1ee;font-weight:600">7:00am – 12:00md<br>2:00pm – 9:00pm</span></span>
+        <span>Sábado<br><span style="color:#f5f1ee;font-weight:600">7:00am – 12:00md</span></span>
+        <span>Domingo<br><span style="color:#5a4a40">Cerrado</span></span>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:1px">Contacto</div>
+      <div style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
+        <span>📧 [email@badboysgym.com]</span>
+        <span>📞 [+XX XXX XXX XXXX]</span>
+        <span>📍 [Dirección del Gym]</span>
+        <a href="#planes" style="display:inline-flex;align-items:center;gap:10px;background:#D2042D;color:#120c0a;font-weight:700;font-size:14px;padding:12px 20px;border-radius:40px;margin-top:8px">Únete ahora ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-wordmark">BAD BOYS GYM</div>
+
+  <div class="footer-bottom">
+    <span style="color:#5a4a40;font-size:14px">© 2026 Bad Boys Gym. Todos los derechos reservados.</span>
+    <div style="display:flex;gap:24px">
+      <a href="#" style="color:#5a4a40;font-size:14px">Política de privacidad</a>
+      <a href="#" style="color:#5a4a40;font-size:14px">Términos y condiciones</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL DE REGISTRO ============ -->
+<div class="reg-modal" id="registroModal">
+  <div class="reg-modal-backdrop" onclick="cerrarRegistro()"></div>
+  <div class="reg-modal-card">
+    <button type="button" class="reg-modal-close" onclick="cerrarRegistro()" aria-label="Cerrar">✕</button>
+
+    <div id="registroFormWrap">
+      <div style="color:#D2042D;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase">Plan seleccionado</div>
+      <h3 id="registroPlanNombre" style="font-family:'Anton',sans-serif;font-size:26px;text-transform:uppercase;margin-top:6px">Plan Mensual</h3>
+
+      <form id="registroForm" onsubmit="enviarRegistro(event)" style="margin-top:24px;display:flex;flex-direction:column;gap:16px">
+        <input class="reg-input" name="nombre" required placeholder="Nombre">
+        <input class="reg-input" name="apellido" required placeholder="Apellido">
+        <input class="reg-input" name="correo" type="email" required placeholder="Correo electrónico">
+        <input class="reg-input" name="whatsapp" type="tel" required placeholder="Número de WhatsApp">
+
+        <div>
+          <div style="font-size:14px;color:#a99c91;margin-bottom:8px">Método de pago</div>
+          <div class="reg-pay-row">
+            <label class="reg-pay-option"><input type="radio" name="metodo_pago" value="sinpe" required> Sinpe Móvil</label>
+            <label class="reg-pay-option"><input type="radio" name="metodo_pago" value="efectivo" required> Efectivo</label>
+          </div>
+        </div>
+
+        <p id="registroMsg" style="font-size:14px;min-height:18px;color:#D2042D"></p>
+
+        <button type="submit" class="btn-pill" style="justify-content:center">Enviar registro</button>
+      </form>
+    </div>
+
+    <div id="registroExito" style="display:none;text-align:center;padding:12px 0">
+      <div style="width:64px;height:64px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;margin:0 auto">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+      </div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:24px;text-transform:uppercase;margin-top:20px">¡Registro recibido!</h3>
+      <p style="color:#a99c91;margin-top:12px;font-size:15px;line-height:1.6">Nos pondremos en contacto por WhatsApp para confirmar tu pago y activar tu membresía.</p>
+      <button type="button" onclick="cerrarRegistro()" class="btn-pill" style="margin-top:24px;justify-content:center">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  function toggleMenu(){
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobileNav').classList.toggle('open');
+    document.body.style.overflow = document.getElementById('mobileNav').classList.contains('open') ? 'hidden' : '';
+  }
+
+  // ============ REGISTRO DE MIEMBROS (Supabase) ============
+  const SUPABASE_URL = 'https://bwbyjhotaudunqpaiqjv.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_3dGYMUV_W3fsYEqwHAXh9w_Yx7DGdw8';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let planesPorNombre = {};
+  let sedeActivaId = null;
+
+  async function cargarDatosRegistro(){
+    const { data: planes } = await supabaseClient.from('planes').select('id,nombre').eq('activo', true);
+    (planes || []).forEach(p => { planesPorNombre[p.nombre] = p.id; });
+
+    const { data: sedes } = await supabaseClient.from('sedes').select('id,nombre').eq('activa', true).limit(1);
+    if (sedes && sedes[0]) sedeActivaId = sedes[0].id;
+  }
+  cargarDatosRegistro();
+
+  function abrirRegistro(planNombre){
+    document.getElementById('registroPlanNombre').textContent = planNombre;
+    document.getElementById('registroForm').dataset.plan = planNombre;
+    document.getElementById('registroFormWrap').style.display = 'block';
+    document.getElementById('registroExito').style.display = 'none';
+    document.getElementById('registroMsg').textContent = '';
+    document.getElementById('registroModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarRegistro(){
+    document.getElementById('registroModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  async function enviarRegistro(event){
+    event.preventDefault();
+    const form = event.target;
+    const msg = document.getElementById('registroMsg');
+    const btn = form.querySelector('button[type="submit"]');
+    const planNombre = form.dataset.plan;
+    const planId = planesPorNombre[planNombre];
+
+    if (!planId || !sedeActivaId){
+      msg.textContent = 'No se pudo cargar la información del plan. Espera un momento e intenta de nuevo.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const { error } = await supabaseClient.from('miembros').insert({
+      sede_id: sedeActivaId,
+      plan_id: planId,
+      nombre: form.nombre.value.trim(),
+      apellido: form.apellido.value.trim(),
+      correo: form.correo.value.trim(),
+      whatsapp: form.whatsapp.value.trim(),
+      metodo_pago: form.metodo_pago.value
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Enviar registro';
+
+    if (error){
+      msg.textContent = 'Hubo un error al enviar tu registro. Intenta de nuevo.';
+      return;
+    }
+
+    form.reset();
+    document.getElementById('registroFormWrap').style.display = 'none';
+    document.getElementById('registroExito').style.display = 'block';
+  }
+</script>
+</body>
+</html>
