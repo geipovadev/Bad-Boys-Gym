@@ -108,6 +108,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <nav className="flex gap-2">
               {navLink("/dashboard", "Dashboard")}
               {navLink("/dashboard/miembros", "Miembros")}
+              {navLink("/dashboard/cuenta", "Mi cuenta")}
             </nav>
           </div>
 

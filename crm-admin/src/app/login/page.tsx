@@ -3,10 +3,11 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { usernameToEmail } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,7 +17,10 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: usernameToEmail(username),
+      password,
+    });
 
     setLoading(false);
 
@@ -41,12 +45,13 @@ export default function LoginPage() {
 
         <label className="mb-1 block text-sm text-neutral-400">Usuario</label>
         <input
-          type="email"
+          type="text"
           required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          autoCapitalize="none"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="mb-4 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
-          placeholder="admin@badboysgym.com"
+          placeholder="alvaro.gym"
         />
 
         <label className="mb-1 block text-sm text-neutral-400">Contraseña</label>
