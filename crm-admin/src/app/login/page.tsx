@@ -5,8 +5,11 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { usernameToEmail } from "@/lib/auth";
 
+type Acceso = "admin" | "instructor";
+
 export default function LoginPage() {
   const router = useRouter();
+  const [acceso, setAcceso] = useState<Acceso>("admin");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,18 +20,44 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error: signInError } = await supabase.auth.signInWithPassword({
       email: usernameToEmail(username),
       password,
     });
 
-    setLoading(false);
-
-    if (error) {
+    if (signInError || !data.user) {
+      setLoading(false);
       setError("Usuario o contraseña incorrectos.");
       return;
     }
 
+    const { data: adminRow } = await supabase
+      .from("admins")
+      .select("rol")
+      .eq("id", data.user.id)
+      .maybeSingle();
+
+    const rolEsperado = acceso === "admin" ? "super_admin" : "instructor";
+
+    if (!adminRow) {
+      await supabase.auth.signOut();
+      setLoading(false);
+      setError("Esta cuenta no tiene acceso al panel.");
+      return;
+    }
+
+    if (adminRow.rol !== rolEsperado) {
+      await supabase.auth.signOut();
+      setLoading(false);
+      setError(
+        acceso === "admin"
+          ? "Esta cuenta es de instructor. Selecciona la pestaña \"Instructor\"."
+          : "Esta cuenta es de administrador. Selecciona la pestaña \"Administrador\"."
+      );
+      return;
+    }
+
+    setLoading(false);
     router.push("/dashboard");
   }
 
@@ -52,6 +81,31 @@ export default function LoginPage() {
           </div>
         </div>
         <h1 className="mb-6 text-2xl font-bold text-white">Panel de Administración</h1>
+
+        <div className="mb-6 flex gap-2 rounded-lg bg-neutral-800 p-1">
+          <button
+            type="button"
+            onClick={() => setAcceso("admin")}
+            className={`flex-1 rounded-md py-2 text-sm font-semibold transition ${
+              acceso === "admin"
+                ? "bg-red-600 text-white"
+                : "text-neutral-400 hover:text-white"
+            }`}
+          >
+            Administrador
+          </button>
+          <button
+            type="button"
+            onClick={() => setAcceso("instructor")}
+            className={`flex-1 rounded-md py-2 text-sm font-semibold transition ${
+              acceso === "instructor"
+                ? "bg-red-600 text-white"
+                : "text-neutral-400 hover:text-white"
+            }`}
+          >
+            Instructor
+          </button>
+        </div>
 
         <label className="mb-1 block text-sm text-neutral-400">Usuario</label>
         <input
