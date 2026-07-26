@@ -61,7 +61,7 @@ export default function LoginPage() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="mb-4 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
-          placeholder="alvaro.gym"
+          placeholder="Tu usuario"
         />
 
         <label className="mb-1 block text-sm text-neutral-400">Contraseña</label>
