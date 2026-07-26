@@ -17,7 +17,8 @@ export type Plan = {
 export type AdminProfile = {
   id: string;
   nombre: string;
-  rol: "super_admin" | "admin_sede";
+  username: string;
+  rol: "super_admin" | "instructor";
   sede_id: string | null;
 };
 

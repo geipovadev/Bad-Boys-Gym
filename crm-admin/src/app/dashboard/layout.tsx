@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       const { data: adminRow } = await supabase
         .from("admins")
-        .select("id,nombre,rol,sede_id")
+        .select("id,nombre,username,rol,sede_id")
         .eq("id", session.user.id)
         .maybeSingle();
 
@@ -118,6 +118,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <nav className="flex gap-2">
               {navLink("/dashboard", "Dashboard")}
               {navLink("/dashboard/miembros", "Miembros")}
+              {profile?.rol === "super_admin" && navLink("/dashboard/instructores", "Instructores")}
               {navLink("/dashboard/cuenta", "Mi cuenta")}
             </nav>
           </div>
