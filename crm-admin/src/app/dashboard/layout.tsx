@@ -102,8 +102,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="min-h-screen bg-neutral-950 text-white">
         <header className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-800 px-6 py-4">
           <div className="flex items-center gap-6">
-            <div className="text-lg font-black uppercase tracking-wide">
-              Bad Boys <span className="text-red-600">Gym</span>
+            <div className="flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.jpeg"
+                alt="Bad Boys Gym"
+                width={36}
+                height={36}
+                className="rounded-lg object-cover"
+              />
+              <div className="text-lg font-black uppercase tracking-wide">
+                Bad Boys <span className="text-red-600">Gym</span>
+              </div>
             </div>
             <nav className="flex gap-2">
               {navLink("/dashboard", "Dashboard")}

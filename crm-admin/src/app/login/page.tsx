@@ -38,8 +38,18 @@ export default function LoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-2xl border border-red-900/30 bg-neutral-900 p-8 shadow-xl"
       >
-        <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-red-600">
-          Bad Boys Gym
+        <div className="mb-4 flex items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.jpeg"
+            alt="Bad Boys Gym"
+            width={44}
+            height={44}
+            className="rounded-lg object-cover"
+          />
+          <div className="text-xs font-semibold uppercase tracking-widest text-red-600">
+            Bad Boys Gym
+          </div>
         </div>
         <h1 className="mb-6 text-2xl font-bold text-white">Panel de Administración</h1>
 
