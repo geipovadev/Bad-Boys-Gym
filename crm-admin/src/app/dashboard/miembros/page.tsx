@@ -85,6 +85,8 @@ export default function MiembrosPage() {
 
     await supabase.from("pagos").insert({
       miembro_id: m.id,
+      sede_id: m.sede_id,
+      concepto: plan.nombre,
       monto: plan.precio,
       metodo: m.metodo_pago,
       registrado_por: profile.id,
@@ -109,6 +111,8 @@ export default function MiembrosPage() {
 
     await supabase.from("pagos").insert({
       miembro_id: m.id,
+      sede_id: m.sede_id,
+      concepto: plan.nombre,
       monto: plan.precio,
       metodo: m.metodo_pago,
       registrado_por: profile.id,

@@ -31,9 +31,23 @@ export type Contacto = {
   nombre: string;
   whatsapp: string;
   correo: string | null;
-  origen: "registro_miembro" | "boton_whatsapp";
+  origen: "registro_miembro" | "boton_whatsapp" | "pago_diario";
   sede_id: string | null;
   notas: string | null;
+  created_at: string;
+};
+
+export type Pago = {
+  id: string;
+  miembro_id: string | null;
+  sede_id: string;
+  nombre: string | null;
+  whatsapp: string | null;
+  concepto: string | null;
+  monto: number;
+  metodo: MetodoPago;
+  fecha: string;
+  registrado_por: string | null;
   created_at: string;
 };
 

@@ -10,6 +10,7 @@ const TABS: { key: Contacto["origen"] | "todos"; label: string }[] = [
   { key: "todos", label: "Todos" },
   { key: "registro_miembro", label: "Registro de membresía" },
   { key: "boton_whatsapp", label: "Botón de WhatsApp" },
+  { key: "pago_diario", label: "Pago diario" },
 ];
 
 export default function ContactosPage() {
@@ -107,10 +108,16 @@ export default function ContactosPage() {
                     className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
                       c.origen === "registro_miembro"
                         ? "bg-red-600/20 text-red-400"
-                        : "bg-green-600/20 text-green-400"
+                        : c.origen === "pago_diario"
+                          ? "bg-blue-600/20 text-blue-400"
+                          : "bg-green-600/20 text-green-400"
                     }`}
                   >
-                    {c.origen === "registro_miembro" ? "Registro" : "WhatsApp"}
+                    {c.origen === "registro_miembro"
+                      ? "Registro"
+                      : c.origen === "pago_diario"
+                        ? "Pago diario"
+                        : "WhatsApp"}
                   </span>
                 </td>
                 <td className="px-4 py-3">{sedeNombre(c.sede_id)}</td>
