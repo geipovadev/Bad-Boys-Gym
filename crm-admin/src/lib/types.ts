@@ -26,6 +26,17 @@ export type Estado = "pendiente" | "activo" | "por_vencer" | "vencido" | "inacti
 
 export type MetodoPago = "sinpe" | "efectivo";
 
+export type Contacto = {
+  id: string;
+  nombre: string;
+  whatsapp: string;
+  correo: string | null;
+  origen: "registro_miembro" | "boton_whatsapp";
+  sede_id: string | null;
+  notas: string | null;
+  created_at: string;
+};
+
 export type Miembro = {
   id: string;
   sede_id: string;

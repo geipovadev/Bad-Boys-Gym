@@ -91,7 +91,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: "/dashboard", label: "Dashboard" },
     { href: "/dashboard/miembros", label: "Miembros" },
     ...(profile?.rol === "super_admin"
-      ? [{ href: "/dashboard/instructores", label: "Instructores" }]
+      ? [
+          { href: "/dashboard/instructores", label: "Instructores" },
+          { href: "/dashboard/contactos", label: "Contactos" },
+        ]
       : []),
     { href: "/dashboard/cuenta", label: "Mi cuenta" },
   ];
