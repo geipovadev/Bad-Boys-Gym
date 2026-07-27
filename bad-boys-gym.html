@@ -751,6 +751,13 @@
         <input class="reg-input" name="whatsapp" type="tel" required placeholder="Número de WhatsApp">
 
         <div>
+          <div style="font-size:14px;color:#a99c91;margin-bottom:8px">Sede donde vas a entrenar</div>
+          <select class="reg-input" name="sede_id" id="registroSede" required>
+            <option value="" disabled selected>Selecciona una sede</option>
+          </select>
+        </div>
+
+        <div>
           <div style="font-size:14px;color:#a99c91;margin-bottom:8px">Método de pago</div>
           <div class="reg-pay-row">
             <label class="reg-pay-option"><input type="radio" name="metodo_pago" value="sinpe" required> Sinpe Móvil</label>
@@ -813,8 +820,17 @@
     const { data: planes } = await supabaseClient.from('planes').select('id,nombre').eq('activo', true);
     (planes || []).forEach(p => { planesPorNombre[p.nombre] = p.id; });
 
-    const { data: sedes } = await supabaseClient.from('sedes').select('id,nombre').eq('activa', true).limit(1);
+    const { data: sedes } = await supabaseClient.from('sedes').select('id,nombre').eq('activa', true).order('nombre');
     if (sedes && sedes[0]) sedeActivaId = sedes[0].id;
+
+    const select = document.getElementById('registroSede');
+    Array.from(select.querySelectorAll('option[value]:not([value=""])')).forEach(o => o.remove());
+    (sedes || []).forEach(s => {
+      const option = document.createElement('option');
+      option.value = s.id;
+      option.textContent = s.nombre;
+      select.appendChild(option);
+    });
   }
   cargarDatosRegistro();
 
@@ -840,8 +856,9 @@
     const btn = form.querySelector('button[type="submit"]');
     const planNombre = form.dataset.plan;
     const planId = planesPorNombre[planNombre];
+    const sedeId = form.sede_id.value;
 
-    if (!planId || !sedeActivaId){
+    if (!planId || !sedeId){
       msg.textContent = 'No se pudo cargar la información del plan. Espera un momento e intenta de nuevo.';
       return;
     }
@@ -850,7 +867,7 @@
     btn.textContent = 'Enviando...';
 
     const { error } = await supabaseClient.from('miembros').insert({
-      sede_id: sedeActivaId,
+      sede_id: sedeId,
       plan_id: planId,
       nombre: form.nombre.value.trim(),
       apellido: form.apellido.value.trim(),
@@ -867,12 +884,12 @@
       return;
     }
 
-    supabaseClient.from('contactos').insert({
+    await supabaseClient.from('contactos').insert({
       nombre: form.nombre.value.trim(),
       whatsapp: form.whatsapp.value.trim(),
       correo: form.correo.value.trim(),
       origen: 'registro_miembro',
-      sede_id: sedeActivaId
+      sede_id: sedeId
     });
 
     form.reset();
