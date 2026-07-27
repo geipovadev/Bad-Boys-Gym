@@ -16,6 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sedes, setSedes] = useState<Sede[]>([]);
   const [selectedSedeId, setSelectedSedeId] = useState<string | "todas">("todas");
   const [notAdmin, setNotAdmin] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     async function init() {
@@ -55,6 +56,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     init();
   }, [router]);
 
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   async function handleLogout() {
     await supabase.auth.signOut();
     router.replace("/login");
@@ -82,10 +87,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
-  const navLink = (href: string, label: string) => (
+  const links = [
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/dashboard/miembros", label: "Miembros" },
+    ...(profile?.rol === "super_admin"
+      ? [{ href: "/dashboard/instructores", label: "Instructores" }]
+      : []),
+    { href: "/dashboard/cuenta", label: "Mi cuenta" },
+  ];
+
+  const navLink = (href: string, label: string, full = false) => (
     <Link
+      key={href}
       href={href}
       className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+        full ? "block w-full" : ""
+      } ${
         pathname === href
           ? "bg-red-600 text-white"
           : "text-neutral-300 hover:bg-neutral-800"
@@ -95,14 +112,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </Link>
   );
 
+  const sedeControl = profile?.rol === "super_admin" ? (
+    <select
+      value={selectedSedeId}
+      onChange={(e) => setSelectedSedeId(e.target.value)}
+      className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm lg:w-auto"
+    >
+      <option value="todas">Todas las sedes</option>
+      {sedes.map((s) => (
+        <option key={s.id} value={s.id}>
+          {s.nombre}
+        </option>
+      ))}
+    </select>
+  ) : (
+    <span className="block w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-center text-sm text-neutral-300 lg:w-auto lg:text-left">
+      {sedes.find((s) => s.id === profile?.sede_id)?.nombre ?? "Sin sede"}
+    </span>
+  );
+
   return (
     <SedeContext.Provider
       value={{ profile: profile!, sedes, selectedSedeId, setSelectedSedeId }}
     >
       <div className="min-h-screen bg-neutral-950 text-white">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-800 px-6 py-4">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3">
+        <header className="border-b border-neutral-800">
+          <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
+            <Link href="/dashboard" className="flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo.jpeg"
@@ -111,52 +147,62 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 height={36}
                 className="rounded-lg object-cover"
               />
-              <div className="text-lg font-black uppercase tracking-wide">
+              <span className="hidden text-lg font-black uppercase tracking-wide sm:inline">
                 Bad Boys <span className="text-red-600">Gym</span>
+              </span>
+            </Link>
+
+            <div className="hidden items-center gap-6 lg:flex">
+              <nav className="flex gap-2">
+                {links.map((l) => navLink(l.href, l.label))}
+              </nav>
+              <div className="flex items-center gap-4">
+                {sedeControl}
+                <span className="text-sm text-neutral-400">{profile?.nombre}</span>
+                <button
+                  onClick={handleLogout}
+                  className="rounded-lg border border-neutral-700 px-3 py-2 text-sm text-neutral-300 hover:bg-neutral-800"
+                >
+                  Salir
+                </button>
               </div>
             </div>
-            <nav className="flex gap-2">
-              {navLink("/dashboard", "Dashboard")}
-              {navLink("/dashboard/miembros", "Miembros")}
-              {profile?.rol === "super_admin" && navLink("/dashboard/instructores", "Instructores")}
-              {navLink("/dashboard/cuenta", "Mi cuenta")}
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-4">
-            {profile?.rol === "super_admin" ? (
-              <select
-                value={selectedSedeId}
-                onChange={(e) => setSelectedSedeId(e.target.value)}
-                className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm"
-              >
-                <option value="todas">Todas las sedes</option>
-                {sedes.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.nombre}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <span className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-300">
-                {sedes.find((s) => s.id === profile?.sede_id)?.nombre ?? "Sin sede"}
-              </span>
-            )}
-
-            <span className="hidden text-sm text-neutral-400 sm:inline">
-              {profile?.nombre}
-            </span>
 
             <button
-              onClick={handleLogout}
-              className="rounded-lg border border-neutral-700 px-3 py-2 text-sm text-neutral-300 hover:bg-neutral-800"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              aria-label="Menú"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 text-neutral-300 lg:hidden"
             >
-              Salir
+              {mobileMenuOpen ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+              )}
             </button>
           </div>
+
+          {mobileMenuOpen && (
+            <div className="flex flex-col gap-4 border-t border-neutral-800 px-4 py-4 lg:hidden">
+              <nav className="flex flex-col gap-1">
+                {links.map((l) => navLink(l.href, l.label, true))}
+              </nav>
+              <div className="flex flex-col gap-3 border-t border-neutral-800 pt-4">
+                {sedeControl}
+                <span className="text-center text-sm text-neutral-400">
+                  {profile?.nombre}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="rounded-lg border border-neutral-700 px-3 py-2 text-sm text-neutral-300 hover:bg-neutral-800"
+                >
+                  Salir
+                </button>
+              </div>
+            </div>
+          )}
         </header>
 
-        <main className="p-6">{children}</main>
+        <main className="p-4 sm:p-6">{children}</main>
       </div>
     </SedeContext.Provider>
   );
