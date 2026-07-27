@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useSede } from "@/lib/SedeContext";
 import type { Miembro } from "@/lib/types";
+import BarChart, { type BarChartPoint } from "@/components/BarChart";
 
 type Counts = {
   total: number;
@@ -15,11 +16,41 @@ type Counts = {
 
 const EMPTY_COUNTS: Counts = { total: 0, activos: 0, porVencer: 0, vencidos: 0, pendientes: 0 };
 
+const MESES = [
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
+];
+
+const RANGOS = [
+  { meses: 3, label: "3 meses" },
+  { meses: 6, label: "6 meses" },
+  { meses: 12, label: "12 meses" },
+];
+
+function listaDeMeses(n: number) {
+  const hoy = new Date();
+  const meses = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(hoy.getFullYear(), hoy.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    meses.push({ key, label: `${MESES[d.getMonth()]} ${String(d.getFullYear()).slice(2)}` });
+  }
+  return meses;
+}
+
+function formatoColones(v: number) {
+  return `₡${Math.round(v).toLocaleString("es-CR")}`;
+}
+
 export default function DashboardPage() {
   const { selectedSedeId } = useSede();
   const [counts, setCounts] = useState<Counts>(EMPTY_COUNTS);
   const [recientes, setRecientes] = useState<Miembro[]>([]);
+  const [rangoMeses, setRangoMeses] = useState(6);
+  const [ingresosPorMes, setIngresosPorMes] = useState<BarChartPoint[]>([]);
+  const [miembrosPorMes, setMiembrosPorMes] = useState<BarChartPoint[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const meses = useMemo(() => listaDeMeses(rangoMeses), [rangoMeses]);
 
   useEffect(() => {
     async function load() {
@@ -47,11 +78,50 @@ export default function DashboardPage() {
           .slice(0, 5)
       );
 
+      const desde = `${meses[0].key}-01`;
+
+      let pagosQuery = supabase
+        .from("pagos")
+        .select("fecha,monto,sede_id")
+        .gte("fecha", desde);
+      if (selectedSedeId !== "todas") {
+        pagosQuery = pagosQuery.eq("sede_id", selectedSedeId);
+      }
+      const { data: pagosData } = await pagosQuery;
+
+      const ingresosPorClave: Record<string, number> = {};
+      (pagosData ?? []).forEach((p) => {
+        const clave = String(p.fecha).slice(0, 7);
+        ingresosPorClave[clave] = (ingresosPorClave[clave] ?? 0) + Number(p.monto);
+      });
+      setIngresosPorMes(
+        meses.map((m) => ({ label: m.label, value: ingresosPorClave[m.key] ?? 0 }))
+      );
+
+      let miembrosQuery = supabase
+        .from("miembros")
+        .select("created_at,sede_id")
+        .gte("created_at", desde);
+      if (selectedSedeId !== "todas") {
+        miembrosQuery = miembrosQuery.eq("sede_id", selectedSedeId);
+      }
+      const { data: miembrosData } = await miembrosQuery;
+
+      const miembrosPorClave: Record<string, number> = {};
+      (miembrosData ?? []).forEach((m) => {
+        const clave = String(m.created_at).slice(0, 7);
+        miembrosPorClave[clave] = (miembrosPorClave[clave] ?? 0) + 1;
+      });
+      setMiembrosPorMes(
+        meses.map((m) => ({ label: m.label, value: miembrosPorClave[m.key] ?? 0 }))
+      );
+
       setLoading(false);
     }
 
     load();
-  }, [selectedSedeId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSedeId, rangoMeses]);
 
   const cards: { label: string; value: number; color: string }[] = [
     { label: "Total de miembros", value: counts.total, color: "text-white" },
@@ -77,6 +147,38 @@ export default function DashboardPage() {
             <div className="mt-1 text-sm text-neutral-400">{c.label}</div>
           </div>
         ))}
+      </div>
+
+      <div className="mb-4 flex items-center gap-2">
+        <span className="text-sm text-neutral-500">Ver últimos:</span>
+        {RANGOS.map((r) => (
+          <button
+            key={r.meses}
+            onClick={() => setRangoMeses(r.meses)}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+              rangoMeses === r.meses
+                ? "bg-red-600 text-white"
+                : "bg-neutral-900 text-neutral-300 hover:bg-neutral-800"
+            }`}
+          >
+            {r.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <BarChart
+          title="Ingresos por mes"
+          data={ingresosPorMes}
+          color="#3987e5"
+          formatValue={formatoColones}
+        />
+        <BarChart
+          title="Miembros nuevos por mes"
+          data={miembrosPorMes}
+          color="#199e70"
+          formatValue={(v) => v.toLocaleString("es-CR")}
+        />
       </div>
 
       <h2 className="mb-3 text-lg font-semibold">Últimos registros</h2>
