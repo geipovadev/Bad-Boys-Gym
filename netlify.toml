@@ -1,5 +1,7 @@
 [build]
   publish = "."
+  # Sitio de la landing: cancela el deploy si el commit solo tocó el CRM.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)crm-admin'"
 
 [[redirects]]
   from = "/"
