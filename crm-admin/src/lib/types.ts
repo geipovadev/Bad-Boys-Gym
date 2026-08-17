@@ -31,7 +31,7 @@ export type Contacto = {
   nombre: string;
   whatsapp: string;
   correo: string | null;
-  origen: "registro_miembro" | "boton_whatsapp" | "pago_diario";
+  origen: "registro_miembro" | "boton_whatsapp" | "pago_diario" | "sesion_gratis";
   sede_id: string | null;
   notas: string | null;
   created_at: string;
@@ -48,6 +48,21 @@ export type Pago = {
   metodo: MetodoPago;
   fecha: string;
   registrado_por: string | null;
+  created_at: string;
+};
+
+export type EstadoSesion = "pendiente" | "asistio" | "no_asistio";
+
+export type SesionGratis = {
+  id: string;
+  nombre: string;
+  correo: string;
+  telefono: string;
+  sede_id: string;
+  fecha: string;
+  hora: string;
+  estado: EstadoSesion;
+  notas: string | null;
   created_at: string;
 };
 

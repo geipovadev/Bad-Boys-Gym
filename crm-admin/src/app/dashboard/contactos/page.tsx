@@ -11,7 +11,22 @@ const TABS: { key: Contacto["origen"] | "todos"; label: string }[] = [
   { key: "registro_miembro", label: "Registro de membresía" },
   { key: "boton_whatsapp", label: "Botón de WhatsApp" },
   { key: "pago_diario", label: "Pago diario" },
+  { key: "sesion_gratis", label: "Sesión gratis" },
 ];
+
+const ORIGEN_ESTILO: Record<Contacto["origen"], string> = {
+  registro_miembro: "bg-red-600/20 text-red-400",
+  boton_whatsapp: "bg-green-600/20 text-green-400",
+  pago_diario: "bg-blue-600/20 text-blue-400",
+  sesion_gratis: "bg-yellow-600/20 text-yellow-400",
+};
+
+const ORIGEN_TEXTO: Record<Contacto["origen"], string> = {
+  registro_miembro: "Registro",
+  boton_whatsapp: "WhatsApp",
+  pago_diario: "Pago diario",
+  sesion_gratis: "Sesión gratis",
+};
 
 export default function ContactosPage() {
   const router = useRouter();
@@ -105,19 +120,9 @@ export default function ContactosPage() {
                 <td className="px-4 py-3 text-neutral-400">{c.correo ?? "—"}</td>
                 <td className="px-4 py-3">
                   <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-                      c.origen === "registro_miembro"
-                        ? "bg-red-600/20 text-red-400"
-                        : c.origen === "pago_diario"
-                          ? "bg-blue-600/20 text-blue-400"
-                          : "bg-green-600/20 text-green-400"
-                    }`}
+                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${ORIGEN_ESTILO[c.origen]}`}
                   >
-                    {c.origen === "registro_miembro"
-                      ? "Registro"
-                      : c.origen === "pago_diario"
-                        ? "Pago diario"
-                        : "WhatsApp"}
+                    {ORIGEN_TEXTO[c.origen]}
                   </span>
                 </td>
                 <td className="px-4 py-3">{sedeNombre(c.sede_id)}</td>

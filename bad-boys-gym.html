@@ -660,7 +660,7 @@
   <h2 class="cta-title">Tu mejor versión<br>te está esperando.</h2>
   <p style="color:#a99c91;font-size:18px;margin:28px auto 0;max-width:540px;line-height:1.7">Cada día que esperas es un día que no estás avanzando. El momento perfecto no existe — pero el momento correcto es ahora.</p>
   <div style="margin-top:40px">
-    <a href="#contacto" class="btn-pill" style="font-size:17px;padding:12px 12px 12px 36px">Empezar hoy con una sesión gratis<span class="icon" style="width:52px;height:52px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
+    <a href="javascript:void(0)" onclick="abrirSesion()" class="btn-pill" style="font-size:17px;padding:12px 12px 12px 36px">Empezar hoy con una sesión gratis<span class="icon" style="width:52px;height:52px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></span></a>
   </div>
   <p style="color:#5a4a40;font-size:15px;margin-top:20px">Sin tarjeta de crédito. Sin compromisos. Solo resultados.</p>
 </section>
@@ -767,6 +767,59 @@
   </div>
 </div>
 
+<!-- ============ MODAL DE SESIÓN GRATIS ============ -->
+<div class="reg-modal" id="sesionModal">
+  <div class="reg-modal-backdrop" onclick="cerrarSesion()"></div>
+  <div class="reg-modal-card">
+    <button type="button" class="reg-modal-close" onclick="cerrarSesion()" aria-label="Cerrar">✕</button>
+
+    <div id="sesionFormWrap">
+      <div style="color:#D2042D;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase">Sesión gratis</div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:26px;text-transform:uppercase;margin-top:6px">Agenda tu visita</h3>
+      <p style="color:#a99c91;font-size:14px;margin-top:10px;line-height:1.6">Elige el día y la hora que te acomode. Te esperamos sin compromiso.</p>
+
+      <form id="sesionForm" onsubmit="enviarSesion(event)" style="margin-top:22px;display:flex;flex-direction:column;gap:16px">
+        <input class="reg-input" name="nombre" required placeholder="Nombre completo">
+        <input class="reg-input" name="correo" type="email" required placeholder="Correo electrónico">
+        <input class="reg-input" name="telefono" type="tel" required placeholder="Teléfono">
+
+        <div>
+          <div style="font-size:14px;color:#a99c91;margin-bottom:8px">Sede que vas a visitar</div>
+          <select class="reg-input" name="sede_id" id="sesionSede" required>
+            <option value="" disabled selected>Selecciona una sede</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:14px;color:#a99c91;margin-bottom:8px">Día de tu visita</div>
+          <input class="reg-input" name="fecha" id="sesionFecha" type="date" required onchange="actualizarHoras()">
+        </div>
+
+        <div>
+          <div style="font-size:14px;color:#a99c91;margin-bottom:8px">Hora</div>
+          <select class="reg-input" name="hora" id="sesionHora" required disabled>
+            <option value="" disabled selected>Elige primero el día</option>
+          </select>
+          <p id="sesionHorario" style="font-size:13px;color:#7a6d63;margin-top:8px"></p>
+        </div>
+
+        <p id="sesionMsg" style="font-size:14px;min-height:18px;color:#D2042D"></p>
+
+        <button type="submit" class="btn-pill" style="justify-content:center">Reservar mi sesión</button>
+      </form>
+    </div>
+
+    <div id="sesionExito" style="display:none;text-align:center;padding:12px 0">
+      <div style="width:64px;height:64px;border-radius:50%;background:#D2042D;display:flex;align-items:center;justify-content:center;margin:0 auto">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#120c0a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+      </div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:24px;text-transform:uppercase;margin-top:20px">¡Cita agendada!</h3>
+      <p id="sesionResumen" style="color:#a99c91;margin-top:12px;font-size:15px;line-height:1.6"></p>
+      <button type="button" onclick="cerrarSesion()" class="btn-pill" style="margin-top:24px;justify-content:center">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ MODAL DE WHATSAPP ============ -->
 <div class="reg-modal" id="waModal">
   <div class="reg-modal-backdrop" onclick="cerrarWhatsapp()"></div>
@@ -808,13 +861,16 @@
     const { data: sedes } = await supabaseClient.from('sedes').select('id,nombre').eq('activa', true).order('nombre');
     if (sedes && sedes[0]) sedeActivaId = sedes[0].id;
 
-    const select = document.getElementById('registroSede');
-    Array.from(select.querySelectorAll('option[value]:not([value=""])')).forEach(o => o.remove());
-    (sedes || []).forEach(s => {
-      const option = document.createElement('option');
-      option.value = s.id;
-      option.textContent = s.nombre;
-      select.appendChild(option);
+    ['registroSede', 'sesionSede'].forEach(id => {
+      const select = document.getElementById(id);
+      if (!select) return;
+      Array.from(select.querySelectorAll('option[value]:not([value=""])')).forEach(o => o.remove());
+      (sedes || []).forEach(s => {
+        const option = document.createElement('option');
+        option.value = s.id;
+        option.textContent = s.nombre;
+        select.appendChild(option);
+      });
     });
   }
   cargarDatosRegistro();
@@ -917,6 +973,144 @@
 
     btn.disabled = false;
     btn.textContent = 'Continuar a WhatsApp';
+  }
+
+  // ============ SESIÓN GRATIS ============
+  // Horario real del gimnasio. 0 = domingo.
+  // Última hora de entrada, no de cierre: cerramos 12:00md y 9:00pm.
+  const HORARIO = {
+    1: [[7, 11], [14, 20]],
+    2: [[7, 11], [14, 20]],
+    3: [[7, 11], [14, 20]],
+    4: [[7, 11], [14, 20]],
+    5: [[7, 11], [14, 20]],
+    6: [[7, 11]]
+  };
+
+  function etiquetaHora(h){
+    const sufijo = h < 12 ? 'am' : 'pm';
+    const doce = h % 12 === 0 ? 12 : h % 12;
+    return `${doce}:00${sufijo}`;
+  }
+
+  function abrirSesion(){
+    const hoy = new Date();
+    const input = document.getElementById('sesionFecha');
+    input.min = hoy.toISOString().slice(0, 10);
+    const tope = new Date(hoy.getTime() + 30 * 86400000);
+    input.max = tope.toISOString().slice(0, 10);
+
+    document.getElementById('sesionFormWrap').style.display = 'block';
+    document.getElementById('sesionExito').style.display = 'none';
+    document.getElementById('sesionMsg').textContent = '';
+    document.getElementById('sesionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarSesion(){
+    document.getElementById('sesionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function actualizarHoras(){
+    const fecha = document.getElementById('sesionFecha').value;
+    const select = document.getElementById('sesionHora');
+    const aviso = document.getElementById('sesionHorario');
+
+    Array.from(select.querySelectorAll('option[value]:not([value=""])')).forEach(o => o.remove());
+    select.value = '';
+
+    if (!fecha){
+      select.disabled = true;
+      aviso.textContent = '';
+      return;
+    }
+
+    // Partimos la fecha a mano: new Date('2026-08-20') se interpreta en UTC
+    // y en Costa Rica devolvería el día anterior.
+    const [a, m, d] = fecha.split('-').map(Number);
+    const dia = new Date(a, m - 1, d).getDay();
+    const bloques = HORARIO[dia];
+
+    if (!bloques){
+      select.disabled = true;
+      select.options[0].textContent = 'Cerrado ese día';
+      aviso.textContent = 'Los domingos el gimnasio está cerrado. Elige otro día.';
+      return;
+    }
+
+    select.options[0].textContent = 'Selecciona una hora';
+    bloques.forEach(([desde, hasta]) => {
+      for (let h = desde; h <= hasta; h++){
+        const option = document.createElement('option');
+        option.value = `${String(h).padStart(2, '0')}:00`;
+        option.textContent = etiquetaHora(h);
+        select.appendChild(option);
+      }
+    });
+
+    select.disabled = false;
+    aviso.textContent = dia === 6
+      ? 'Sábados atendemos de 7:00am a 12:00md.'
+      : 'Lunes a viernes: 7:00am a 12:00md y 2:00pm a 9:00pm.';
+  }
+
+  async function enviarSesion(event){
+    event.preventDefault();
+    const form = event.target;
+    const msg = document.getElementById('sesionMsg');
+    const btn = form.querySelector('button[type="submit"]');
+
+    const nombre = form.nombre.value.trim();
+    const correo = form.correo.value.trim();
+    const telefono = form.telefono.value.trim();
+    const sedeId = form.sede_id.value;
+    const fecha = form.fecha.value;
+    const hora = form.hora.value;
+
+    if (!sedeId || !fecha || !hora){
+      msg.textContent = 'Completa la sede, el día y la hora.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Reservando...';
+
+    const { error } = await supabaseClient.from('sesiones_gratis').insert({
+      nombre: nombre,
+      correo: correo,
+      telefono: telefono,
+      sede_id: sedeId,
+      fecha: fecha,
+      hora: hora
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Reservar mi sesión';
+
+    if (error){
+      msg.textContent = 'No se pudo agendar tu sesión. Intenta de nuevo.';
+      return;
+    }
+
+    await supabaseClient.from('contactos').insert({
+      nombre: nombre,
+      whatsapp: telefono,
+      correo: correo,
+      origen: 'sesion_gratis',
+      sede_id: sedeId
+    });
+
+    const sede = form.sede_id.options[form.sede_id.selectedIndex].textContent;
+    const [aa, mm, dd] = fecha.split('-');
+    document.getElementById('sesionResumen').textContent =
+      `Te esperamos en ${sede} el ${dd}/${mm}/${aa} a las ${etiquetaHora(Number(hora.slice(0, 2)))}. Llega con ropa cómoda.`;
+
+    form.reset();
+    document.getElementById('sesionHora').disabled = true;
+    document.getElementById('sesionHorario').textContent = '';
+    document.getElementById('sesionFormWrap').style.display = 'none';
+    document.getElementById('sesionExito').style.display = 'block';
   }
 </script>
 </body>

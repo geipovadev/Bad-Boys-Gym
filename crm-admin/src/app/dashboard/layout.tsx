@@ -95,6 +95,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const links = [
     ...(esSuperAdmin ? [{ href: "/dashboard", label: "Dashboard" }] : []),
     { href: "/dashboard/miembros", label: "Miembros" },
+    { href: "/dashboard/sesiones", label: "Sesiones" },
     { href: "/dashboard/ingresos", label: "Ingresos" },
     ...(esSuperAdmin
       ? [
