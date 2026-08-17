@@ -26,7 +26,7 @@ function hoyISO() {
 }
 
 export default function MiembrosPage() {
-  const { selectedSedeId, profile } = useSede();
+  const { selectedSedeId, profile, sedes } = useSede();
   const [miembros, setMiembros] = useState<Miembro[]>([]);
   const [planes, setPlanes] = useState<Record<string, Plan>>({});
   const [tab, setTab] = useState<Estado | "todos">("todos");
@@ -155,6 +155,7 @@ export default function MiembrosPage() {
             <tr>
               <th className="px-4 py-3">Nombre</th>
               <th className="px-4 py-3">Contacto</th>
+              <th className="px-4 py-3">Sede</th>
               <th className="px-4 py-3">Plan</th>
               <th className="px-4 py-3">Pago</th>
               <th className="px-4 py-3">Vence</th>
@@ -171,6 +172,9 @@ export default function MiembrosPage() {
                 <td className="px-4 py-3">
                   <div>{m.correo}</div>
                   <div className="text-neutral-500">{m.whatsapp}</div>
+                </td>
+                <td className="px-4 py-3">
+                  {sedes.find((s) => s.id === m.sede_id)?.nombre ?? "—"}
                 </td>
                 <td className="px-4 py-3">{planes[m.plan_id]?.nombre ?? "—"}</td>
                 <td className="px-4 py-3">
@@ -218,7 +222,7 @@ export default function MiembrosPage() {
             ))}
             {!loading && filtrados.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-neutral-500">
+                <td colSpan={8} className="px-4 py-6 text-center text-neutral-500">
                   No hay miembros en este filtro.
                 </td>
               </tr>
