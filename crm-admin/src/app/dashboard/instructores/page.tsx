@@ -27,7 +27,7 @@ export default function InstructoresPage() {
   // Solo los super admin pueden gestionar instructores.
   useEffect(() => {
     if (profile.rol !== "super_admin") {
-      router.replace("/dashboard");
+      router.replace("/dashboard/miembros");
     }
   }, [profile, router]);
 

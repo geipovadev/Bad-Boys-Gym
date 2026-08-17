@@ -87,11 +87,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
+  const esSuperAdmin = profile?.rol === "super_admin";
+
+  // El instructor no ve el Dashboard: su inicio es Miembros.
+  const inicio = esSuperAdmin ? "/dashboard" : "/dashboard/miembros";
+
   const links = [
-    { href: "/dashboard", label: "Dashboard" },
+    ...(esSuperAdmin ? [{ href: "/dashboard", label: "Dashboard" }] : []),
     { href: "/dashboard/miembros", label: "Miembros" },
     { href: "/dashboard/ingresos", label: "Ingresos" },
-    ...(profile?.rol === "super_admin"
+    ...(esSuperAdmin
       ? [
           { href: "/dashboard/instructores", label: "Instructores" },
           { href: "/dashboard/contactos", label: "Contactos" },
@@ -116,7 +121,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </Link>
   );
 
-  const sedeControl = profile?.rol === "super_admin" ? (
+  const sedeControl = esSuperAdmin ? (
     <select
       value={selectedSedeId}
       onChange={(e) => setSelectedSedeId(e.target.value)}
@@ -142,7 +147,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="min-h-screen bg-neutral-950 text-white">
         <header className="border-b border-neutral-800">
           <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
-            <Link href="/dashboard" className="flex items-center gap-3">
+            <Link href={inicio} className="flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo.jpeg"

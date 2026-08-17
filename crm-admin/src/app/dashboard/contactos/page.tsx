@@ -23,7 +23,7 @@ export default function ContactosPage() {
 
   useEffect(() => {
     if (profile.rol !== "super_admin") {
-      router.replace("/dashboard");
+      router.replace("/dashboard/miembros");
     }
   }, [profile, router]);
 

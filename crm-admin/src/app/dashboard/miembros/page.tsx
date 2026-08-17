@@ -202,15 +202,16 @@ export default function MiembrosPage() {
                           Renovar
                         </button>
                       )}
-                    {m.estado_pago === "confirmado" && (
-                      <button
-                        disabled={busy === m.id}
-                        onClick={() => toggleActivo(m)}
-                        className="rounded-lg border border-neutral-700 px-3 py-1.5 text-xs font-semibold text-neutral-300 hover:bg-neutral-800 disabled:opacity-50"
-                      >
-                        {m.activo ? "Desactivar" : "Reactivar"}
-                      </button>
-                    )}
+                    {m.estado_pago === "confirmado" &&
+                      profile.rol === "super_admin" && (
+                        <button
+                          disabled={busy === m.id}
+                          onClick={() => toggleActivo(m)}
+                          className="rounded-lg border border-neutral-700 px-3 py-1.5 text-xs font-semibold text-neutral-300 hover:bg-neutral-800 disabled:opacity-50"
+                        >
+                          {m.activo ? "Desactivar" : "Reactivar"}
+                        </button>
+                      )}
                   </div>
                 </td>
               </tr>

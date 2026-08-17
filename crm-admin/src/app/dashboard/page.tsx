@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useSede } from "@/lib/SedeContext";
 import type { Miembro } from "@/lib/types";
@@ -42,7 +43,8 @@ function formatoColones(v: number) {
 }
 
 export default function DashboardPage() {
-  const { selectedSedeId } = useSede();
+  const router = useRouter();
+  const { selectedSedeId, profile } = useSede();
   const [counts, setCounts] = useState<Counts>(EMPTY_COUNTS);
   const [recientes, setRecientes] = useState<Miembro[]>([]);
   const [rangoMeses, setRangoMeses] = useState(6);
@@ -51,6 +53,13 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   const meses = useMemo(() => listaDeMeses(rangoMeses), [rangoMeses]);
+
+  // El Dashboard es solo para super_admin; el instructor arranca en Miembros.
+  useEffect(() => {
+    if (profile.rol !== "super_admin") {
+      router.replace("/dashboard/miembros");
+    }
+  }, [profile, router]);
 
   useEffect(() => {
     async function load() {
