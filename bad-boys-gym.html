@@ -100,8 +100,11 @@
 
   /* ── Tablet (≤ 900px) ── */
   @media(max-width:900px){
-    .site-header{padding:16px 24px}
-    .header-nav,.header-cta{display:none}
+    .site-header{padding:16px 24px;gap:12px}
+    .header-nav{display:none}
+    /* El CTA se queda visible en móvil, más compacto para que quepa
+       junto al logo y la hamburguesa. */
+    .header-cta{font-size:13px;padding:10px 18px;white-space:nowrap}
     .hamburger{display:flex}
 
     .hero-section{padding:48px 20px 0}
@@ -240,7 +243,6 @@
 <header class="site-header">
   <div class="header-logo">
     <img src="logo.jpeg" alt="Bad Boys Gym" style="width:42px;height:42px;border-radius:13px;object-fit:cover;display:block">
-    <span style="font-family:'Anton',sans-serif;font-size:24px;letter-spacing:1px">BAD BOYS GYM</span>
   </div>
   <nav class="header-nav">
     <a href="#" style="color:#f5f1ee;font-size:15px;font-weight:500;padding:11px 22px;border-radius:30px;background:rgba(60,46,40,0.6)">Inicio</a>
