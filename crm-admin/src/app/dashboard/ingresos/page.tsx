@@ -16,7 +16,7 @@ function formatoColones(monto: number) {
 }
 
 export default function IngresosPage() {
-  const { profile, sedes, selectedSedeId } = useSede();
+  const { profile, sedes, selectedSedeId, refreshToken } = useSede();
 
   const [pagos, setPagos] = useState<Pago[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,7 @@ export default function IngresosPage() {
   useEffect(() => {
     cargar();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSedeId]);
+  }, [selectedSedeId, refreshToken]);
 
   const totales = useMemo(() => {
     const hoy = hoyISO();
@@ -122,13 +122,13 @@ export default function IngresosPage() {
           <div className="mt-1 text-sm text-neutral-400">Ingresos hoy</div>
         </div>
         <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-5">
-          <div className="text-3xl font-black text-white">
+          <div className="text-3xl font-black text-white light:text-zinc-900">
             {loading ? "…" : formatoColones(totales.mes)}
           </div>
           <div className="mt-1 text-sm text-neutral-400">Ingresos este mes</div>
         </div>
         <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-5">
-          <div className="text-3xl font-black text-white">
+          <div className="text-3xl font-black text-white light:text-zinc-900">
             {loading ? "…" : formatoColones(totales.total)}
           </div>
           <div className="mt-1 text-sm text-neutral-400">Ingresos totales</div>
@@ -146,7 +146,7 @@ export default function IngresosPage() {
             required
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
-            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
             placeholder="Nombre"
           />
           <input
@@ -154,7 +154,7 @@ export default function IngresosPage() {
             type="tel"
             value={whatsapp}
             onChange={(e) => setWhatsapp(e.target.value)}
-            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
             placeholder="Número de WhatsApp"
           />
           <input
@@ -163,7 +163,7 @@ export default function IngresosPage() {
             min="1"
             value={monto}
             onChange={(e) => setMonto(e.target.value)}
-            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
             placeholder="Monto pagado (₡)"
           />
 
@@ -172,7 +172,7 @@ export default function IngresosPage() {
               required
               value={sedePago}
               onChange={(e) => setSedePago(e.target.value)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
             >
               <option value="">Selecciona una sede</option>
               {sedes.map((s) => (

@@ -28,9 +28,9 @@ function formatoHora(hora: string) {
 
 function EstadoBadge({ estado }: { estado: EstadoSesion }) {
   const estilos: Record<EstadoSesion, string> = {
-    pendiente: "bg-blue-600/20 text-blue-400",
-    asistio: "bg-green-600/20 text-green-400",
-    no_asistio: "bg-neutral-600/20 text-neutral-400",
+    pendiente: "bg-blue-600/20 text-blue-400 light:bg-blue-500/15 light:text-blue-700",
+    asistio: "bg-green-600/20 text-green-400 light:bg-green-500/15 light:text-green-700",
+    no_asistio: "bg-neutral-600/20 text-neutral-400 light:bg-zinc-500/15 light:text-zinc-700",
   };
   const textos: Record<EstadoSesion, string> = {
     pendiente: "Pendiente",
@@ -45,7 +45,7 @@ function EstadoBadge({ estado }: { estado: EstadoSesion }) {
 }
 
 export default function SesionesPage() {
-  const { selectedSedeId, sedes } = useSede();
+  const { selectedSedeId, sedes, refreshToken } = useSede();
   const [sesiones, setSesiones] = useState<SesionGratis[]>([]);
   const [tab, setTab] = useState<EstadoSesion | "hoy" | "todas">("hoy");
   const [busy, setBusy] = useState<string | null>(null);
@@ -71,7 +71,7 @@ export default function SesionesPage() {
   useEffect(() => {
     cargar();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSedeId]);
+  }, [selectedSedeId, refreshToken]);
 
   const filtradas = useMemo(() => {
     if (tab === "todas") return sesiones;

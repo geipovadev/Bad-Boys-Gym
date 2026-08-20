@@ -46,7 +46,7 @@ export default function CuentaPage() {
 
       <div className="max-w-md rounded-xl border border-neutral-800 bg-neutral-900 p-6">
         <p className="mb-6 text-sm text-neutral-400">
-          Sesión iniciada como <span className="text-white">{profile.nombre}</span>
+          Sesión iniciada como <span className="text-white light:text-zinc-900">{profile.nombre}</span>
         </p>
 
         <h2 className="mb-4 text-lg font-semibold">Cambiar contraseña</h2>
@@ -60,7 +60,7 @@ export default function CuentaPage() {
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
               placeholder="••••••••"
             />
           </div>
@@ -73,7 +73,7 @@ export default function CuentaPage() {
               minLength={8}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
               placeholder="••••••••"
             />
           </div>

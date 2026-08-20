@@ -44,7 +44,7 @@ function formatoColones(v: number) {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { selectedSedeId, profile } = useSede();
+  const { selectedSedeId, profile, refreshToken } = useSede();
   const [counts, setCounts] = useState<Counts>(EMPTY_COUNTS);
   const [recientes, setRecientes] = useState<Miembro[]>([]);
   const [rangoMeses, setRangoMeses] = useState(6);
@@ -130,10 +130,10 @@ export default function DashboardPage() {
 
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSedeId, rangoMeses]);
+  }, [selectedSedeId, rangoMeses, refreshToken]);
 
   const cards: { label: string; value: number; color: string }[] = [
-    { label: "Total de miembros", value: counts.total, color: "text-white" },
+    { label: "Total de miembros", value: counts.total, color: "text-white light:text-zinc-900" },
     { label: "Activos", value: counts.activos, color: "text-green-500" },
     { label: "Por vencer (≤5 días)", value: counts.porVencer, color: "text-yellow-500" },
     { label: "Vencidos", value: counts.vencidos, color: "text-red-500" },
@@ -230,11 +230,11 @@ export default function DashboardPage() {
 
 export function EstadoBadge({ estado }: { estado: Miembro["estado"] }) {
   const styles: Record<Miembro["estado"], string> = {
-    activo: "bg-green-600/20 text-green-400",
-    por_vencer: "bg-yellow-600/20 text-yellow-400",
-    vencido: "bg-red-600/20 text-red-400",
-    pendiente: "bg-blue-600/20 text-blue-400",
-    inactivo: "bg-neutral-600/20 text-neutral-400",
+    activo: "bg-green-600/20 text-green-400 light:bg-green-500/15 light:text-green-700",
+    por_vencer: "bg-yellow-600/20 text-yellow-400 light:bg-yellow-500/15 light:text-yellow-700",
+    vencido: "bg-red-600/20 text-red-400 light:bg-red-500/15 light:text-red-700",
+    pendiente: "bg-blue-600/20 text-blue-400 light:bg-blue-500/15 light:text-blue-700",
+    inactivo: "bg-neutral-600/20 text-neutral-400 light:bg-zinc-500/15 light:text-zinc-700",
   };
   const labels: Record<Miembro["estado"], string> = {
     activo: "Activo",

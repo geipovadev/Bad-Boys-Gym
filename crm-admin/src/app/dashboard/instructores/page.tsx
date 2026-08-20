@@ -11,7 +11,7 @@ type Instructor = AdminProfile & { created_at: string };
 
 export default function InstructoresPage() {
   const router = useRouter();
-  const { profile, sedes } = useSede();
+  const { profile, sedes, refreshToken } = useSede();
 
   const [instructores, setInstructores] = useState<Instructor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export default function InstructoresPage() {
   useEffect(() => {
     cargar();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [refreshToken]);
 
   async function handleCrear(e: FormEvent) {
     e.preventDefault();
@@ -139,7 +139,7 @@ export default function InstructoresPage() {
               required
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
               placeholder="Juan Pérez"
             />
           </div>
@@ -151,7 +151,7 @@ export default function InstructoresPage() {
               autoCapitalize="none"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
               placeholder="juan.gym"
             />
           </div>
@@ -164,7 +164,7 @@ export default function InstructoresPage() {
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
               placeholder="••••••••"
             />
           </div>
@@ -175,7 +175,7 @@ export default function InstructoresPage() {
               required
               value={sedeId}
               onChange={(e) => setSedeId(e.target.value)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
             >
               <option value="">Selecciona una sede</option>
               {sedes.map((s) => (

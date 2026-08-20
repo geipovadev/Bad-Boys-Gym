@@ -82,7 +82,7 @@ export default function LoginPage() {
             Bad Boys Gym
           </div>
         </div>
-        <h1 className="mb-6 text-2xl font-bold text-white">Panel de Administración</h1>
+        <h1 className="mb-6 text-2xl font-bold text-white light:text-zinc-900">Panel de Administración</h1>
 
         <div className="mb-6 flex gap-2 rounded-lg bg-neutral-800 p-1">
           <button
@@ -91,7 +91,7 @@ export default function LoginPage() {
             className={`flex-1 rounded-md py-2 text-sm font-semibold transition ${
               acceso === "admin"
                 ? "bg-red-600 text-white"
-                : "text-neutral-400 hover:text-white"
+                : "text-neutral-400 hover:text-white light:hover:text-zinc-900"
             }`}
           >
             Administrador
@@ -102,7 +102,7 @@ export default function LoginPage() {
             className={`flex-1 rounded-md py-2 text-sm font-semibold transition ${
               acceso === "instructor"
                 ? "bg-red-600 text-white"
-                : "text-neutral-400 hover:text-white"
+                : "text-neutral-400 hover:text-white light:hover:text-zinc-900"
             }`}
           >
             Instructor
@@ -116,7 +116,7 @@ export default function LoginPage() {
           autoCapitalize="none"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mb-4 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+          className="mb-4 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
           placeholder="Tu usuario"
         />
 
@@ -126,7 +126,7 @@ export default function LoginPage() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-4 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white outline-none focus:border-red-600"
+          className="mb-4 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white light:text-zinc-900 outline-none focus:border-red-600"
           placeholder="••••••••"
         />
 

@@ -7,12 +7,16 @@ import { supabase } from "@/lib/supabaseClient";
 import { SedeContext } from "@/lib/SedeContext";
 import type { AdminProfile, Sede } from "@/lib/types";
 
-const ICONO_CLASE = "h-5 w-5 shrink-0";
-
-function Icono({ children }: { children: React.ReactNode }) {
+function Icono({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <svg
-      className={ICONO_CLASE}
+      className={`h-5 w-5 shrink-0 ${className}`}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -94,6 +98,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // En móvil la barra es un cajón que se desliza encima del contenido.
   const [cajonAbierto, setCajonAbierto] = useState(false);
 
+  // Cada incremento hace que las pantallas vuelvan a consultar sus datos.
+  const [refreshToken, setRefreshToken] = useState(0);
+  const [refrescando, setRefrescando] = useState(false);
+  const [tema, setTema] = useState<"dark" | "light">("dark");
+
   useEffect(() => {
     async function init() {
       const { data: sessionData } = await supabase.auth.getSession();
@@ -135,7 +144,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // Se lee después del primer render para no romper la hidratación.
   useEffect(() => {
     setColapsado(localStorage.getItem("bbg_menu_colapsado") === "1");
+    // El script del layout raíz ya puso la clase antes del pintado.
+    setTema(document.documentElement.classList.contains("light") ? "light" : "dark");
   }, []);
+
+  function refrescar() {
+    setRefrescando(true);
+    setRefreshToken((n) => n + 1);
+    // Solo para que el giro del icono se alcance a ver; la recarga ya salió.
+    setTimeout(() => setRefrescando(false), 600);
+  }
+
+  function aplicarTema(t: "dark" | "light") {
+    document.documentElement.classList.toggle("light", t === "light");
+    localStorage.setItem("bbg_tema", t);
+    setTema(t);
+  }
 
   useEffect(() => {
     setCajonAbierto(false);
@@ -216,9 +240,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <SedeContext.Provider
-      value={{ profile: profile!, sedes, selectedSedeId, setSelectedSedeId }}
+      value={{
+        profile: profile!,
+        sedes,
+        selectedSedeId,
+        setSelectedSedeId,
+        refreshToken,
+        refrescar,
+      }}
     >
-      <div className="min-h-screen bg-neutral-950 text-white">
+      <div className="min-h-screen bg-neutral-950 text-white light:text-zinc-900">
         <aside
           className={`fixed inset-y-0 left-0 z-40 flex w-60 flex-col border-r border-neutral-800 bg-neutral-900 transition-all duration-200 ${anchoBarra} ${
             cajonAbierto ? "translate-x-0" : "-translate-x-full"
@@ -314,8 +345,56 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </Icono>
             </button>
 
-            <div className="ml-auto flex items-center gap-3">
+            <div className="ml-auto flex items-center gap-2 sm:gap-3">
               {sedeControl}
+
+              <button
+                onClick={refrescar}
+                disabled={refrescando}
+                title="Actualizar datos"
+                aria-label="Actualizar datos"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 text-neutral-300 hover:bg-neutral-800 disabled:opacity-60"
+              >
+                <Icono className={refrescando ? "animate-spin" : ""}>
+                  <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+                  <path d="M21 3v6h-6" />
+                </Icono>
+              </button>
+
+              <div className="flex items-center rounded-lg border border-neutral-700 p-0.5">
+                <button
+                  onClick={() => aplicarTema("light")}
+                  title="Modo claro"
+                  aria-label="Modo claro"
+                  aria-pressed={tema === "light"}
+                  className={`flex h-8 w-8 items-center justify-center rounded-md transition ${
+                    tema === "light"
+                      ? "bg-red-600 text-white"
+                      : "text-neutral-400 hover:text-neutral-200"
+                  }`}
+                >
+                  <Icono>
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+                  </Icono>
+                </button>
+                <button
+                  onClick={() => aplicarTema("dark")}
+                  title="Modo oscuro"
+                  aria-label="Modo oscuro"
+                  aria-pressed={tema === "dark"}
+                  className={`flex h-8 w-8 items-center justify-center rounded-md transition ${
+                    tema === "dark"
+                      ? "bg-red-600 text-white"
+                      : "text-neutral-400 hover:text-neutral-200"
+                  }`}
+                >
+                  <Icono>
+                    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+                  </Icono>
+                </button>
+              </div>
+
               <span className="hidden text-sm text-neutral-400 sm:inline">
                 {profile?.nombre}
               </span>

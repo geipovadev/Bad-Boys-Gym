@@ -17,7 +17,7 @@ const TABS: { key: Estado | "todos"; label: string }[] = [
 ];
 
 export default function MiembrosPage() {
-  const { selectedSedeId, profile, sedes } = useSede();
+  const { selectedSedeId, profile, sedes, refreshToken } = useSede();
   const [miembros, setMiembros] = useState<Miembro[]>([]);
   const [planes, setPlanes] = useState<Record<string, Plan>>({});
   const [tab, setTab] = useState<Estado | "todos">("todos");
@@ -49,7 +49,7 @@ export default function MiembrosPage() {
   useEffect(() => {
     cargar();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSedeId]);
+  }, [selectedSedeId, refreshToken]);
 
   const filtrados = useMemo(
     () => (tab === "todos" ? miembros : miembros.filter((m) => m.estado === tab)),

@@ -15,10 +15,10 @@ const TABS: { key: Contacto["origen"] | "todos"; label: string }[] = [
 ];
 
 const ORIGEN_ESTILO: Record<Contacto["origen"], string> = {
-  registro_miembro: "bg-red-600/20 text-red-400",
-  boton_whatsapp: "bg-green-600/20 text-green-400",
-  pago_diario: "bg-blue-600/20 text-blue-400",
-  sesion_gratis: "bg-yellow-600/20 text-yellow-400",
+  registro_miembro: "bg-red-600/20 text-red-400 light:bg-red-500/15 light:text-red-700",
+  boton_whatsapp: "bg-green-600/20 text-green-400 light:bg-green-500/15 light:text-green-700",
+  pago_diario: "bg-blue-600/20 text-blue-400 light:bg-blue-500/15 light:text-blue-700",
+  sesion_gratis: "bg-yellow-600/20 text-yellow-400 light:bg-yellow-500/15 light:text-yellow-700",
 };
 
 const ORIGEN_TEXTO: Record<Contacto["origen"], string> = {
@@ -30,7 +30,7 @@ const ORIGEN_TEXTO: Record<Contacto["origen"], string> = {
 
 export default function ContactosPage() {
   const router = useRouter();
-  const { profile, sedes } = useSede();
+  const { profile, sedes, refreshToken } = useSede();
 
   const [contactos, setContactos] = useState<Contacto[]>([]);
   const [tab, setTab] = useState<Contacto["origen"] | "todos">("todos");
@@ -53,7 +53,8 @@ export default function ContactosPage() {
       setLoading(false);
     }
     cargar();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshToken]);
 
   const filtrados = useMemo(
     () => (tab === "todos" ? contactos : contactos.filter((c) => c.origen === tab)),

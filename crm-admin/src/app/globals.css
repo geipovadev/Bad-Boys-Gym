@@ -1,26 +1,37 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* El tema oscuro es el predeterminado: sin clase en <html> se ve como
+   siempre. La clase .light invierte la escala de grises que usa todo el
+   panel, así que las clases existentes (bg-neutral-950, text-neutral-400…)
+   funcionan en ambos temas sin reescribirlas una por una.
+   La variante light: queda disponible para las excepciones.
+
+   Ojo con la forma: con :where() la especificidad es cero y light:text-*
+   pierde contra text-white. Como selector descendiente sí gana. */
+@custom-variant light (.light &);
+
+.light {
+  --color-neutral-950: #ffffff;
+  --color-neutral-900: #f6f6f6;
+  --color-neutral-850: #efefef;
+  --color-neutral-800: #e4e4e4;
+  --color-neutral-700: #d0d0d0;
+  --color-neutral-600: #a0a0a0;
+  --color-neutral-500: #6f6f6f;
+  --color-neutral-400: #4a4a4a;
+  --color-neutral-300: #333333;
+  --color-neutral-200: #232323;
+  --color-neutral-100: #161616;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html.light {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }

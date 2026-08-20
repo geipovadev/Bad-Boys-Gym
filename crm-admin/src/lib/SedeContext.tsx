@@ -8,6 +8,10 @@ export type SedeContextValue = {
   sedes: Sede[];
   selectedSedeId: string | "todas";
   setSelectedSedeId: (id: string | "todas") => void;
+  /** Cambia cada vez que se pulsa Actualizar. Las pantallas lo llevan en
+   *  las dependencias de su useEffect para recargar sus datos. */
+  refreshToken: number;
+  refrescar: () => void;
 };
 
 export const SedeContext = createContext<SedeContextValue | null>(null);

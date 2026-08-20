@@ -186,7 +186,7 @@ export default function BarChart({
                 top: `${((MARGIN_TOP + plotH - (data[hovered].value / max) * plotH) / VIEW_H) * 100}%`,
               }}
             >
-              <div className="font-semibold text-white">{formatValue(data[hovered].value)}</div>
+              <div className="font-semibold text-white light:text-zinc-900">{formatValue(data[hovered].value)}</div>
               <div className="text-neutral-400">{data[hovered].label}</div>
             </div>
           )}
