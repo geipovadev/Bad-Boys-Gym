@@ -4,10 +4,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useSede } from "@/lib/SedeContext";
 import type { Pago, Sede } from "@/lib/types";
-
-function hoyISO() {
-  return new Date().toISOString().slice(0, 10);
-}
+import { hoyISO } from "@/lib/fechas";
 
 function inicioDeMes() {
   const d = new Date();

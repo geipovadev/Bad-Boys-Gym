@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { useSede } from "@/lib/SedeContext";
 import type { Miembro, Plan, Estado } from "@/lib/types";
 import { EstadoBadge } from "../page";
+import { hoyISO, calcularVencimiento } from "@/lib/fechas";
 
 const TABS: { key: Estado | "todos"; label: string }[] = [
   { key: "todos", label: "Todos" },
@@ -14,16 +15,6 @@ const TABS: { key: Estado | "todos"; label: string }[] = [
   { key: "vencido", label: "Vencidos" },
   { key: "inactivo", label: "Inactivos" },
 ];
-
-function addDias(fechaISO: string, dias: number) {
-  const d = new Date(fechaISO + "T00:00:00");
-  d.setDate(d.getDate() + dias);
-  return d.toISOString().slice(0, 10);
-}
-
-function hoyISO() {
-  return new Date().toISOString().slice(0, 10);
-}
 
 export default function MiembrosPage() {
   const { selectedSedeId, profile, sedes } = useSede();
@@ -71,7 +62,7 @@ export default function MiembrosPage() {
 
     setBusy(m.id);
     const inicio = hoyISO();
-    const vencimiento = addDias(inicio, plan.duracion_dias);
+    const vencimiento = calcularVencimiento(inicio, plan.duracion_dias);
 
     await supabase
       .from("miembros")
@@ -102,7 +93,7 @@ export default function MiembrosPage() {
 
     setBusy(m.id);
     const base = m.fecha_vencimiento && m.fecha_vencimiento > hoyISO() ? m.fecha_vencimiento : hoyISO();
-    const nuevoVencimiento = addDias(base, plan.duracion_dias);
+    const nuevoVencimiento = calcularVencimiento(base, plan.duracion_dias);
 
     await supabase
       .from("miembros")

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useSede } from "@/lib/SedeContext";
 import type { EstadoSesion, SesionGratis } from "@/lib/types";
+import { hoyISO } from "@/lib/fechas";
 
 const TABS: { key: EstadoSesion | "hoy" | "todas"; label: string }[] = [
   { key: "hoy", label: "Hoy" },
@@ -12,10 +13,6 @@ const TABS: { key: EstadoSesion | "hoy" | "todas"; label: string }[] = [
   { key: "no_asistio", label: "No asistieron" },
   { key: "todas", label: "Todas" },
 ];
-
-function hoyISO() {
-  return new Date().toISOString().slice(0, 10);
-}
 
 function formatoFecha(fecha: string) {
   const [a, m, d] = fecha.split("-");
