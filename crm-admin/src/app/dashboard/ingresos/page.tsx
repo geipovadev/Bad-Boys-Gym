@@ -198,7 +198,7 @@ export default function IngresosPage() {
 
       <h2 className="mb-3 text-lg font-semibold">Pagos recientes</h2>
       <div className="overflow-x-auto rounded-xl border border-neutral-800">
-        <table className="w-full text-left text-sm">
+        <table className="tabla-responsiva w-full text-left text-sm">
           <thead className="bg-neutral-900 text-neutral-400">
             <tr>
               <th className="px-4 py-3">Fecha</th>
@@ -212,14 +212,14 @@ export default function IngresosPage() {
           <tbody>
             {pagos.map((p) => (
               <tr key={p.id} className="border-t border-neutral-800">
-                <td className="px-4 py-3 text-neutral-400">{p.fecha}</td>
-                <td className="px-4 py-3">{p.nombre ?? "—"}</td>
-                <td className="px-4 py-3 text-neutral-400">{p.concepto ?? "—"}</td>
-                <td className="px-4 py-3 capitalize">{p.metodo}</td>
+                <td data-label="Fecha" className="px-4 py-3 text-neutral-400">{p.fecha}</td>
+                <td data-label="Nombre" className="px-4 py-3">{p.nombre ?? "—"}</td>
+                <td data-label="Concepto" className="px-4 py-3 text-neutral-400">{p.concepto ?? "—"}</td>
+                <td data-label="Método" className="px-4 py-3 capitalize">{p.metodo}</td>
                 {selectedSedeId === "todas" && (
-                  <td className="px-4 py-3">{sedeNombre(p.sede_id)}</td>
+                  <td data-label="Sede" className="px-4 py-3">{sedeNombre(p.sede_id)}</td>
                 )}
-                <td className="px-4 py-3 font-semibold text-green-400">
+                <td data-label="Monto" className="px-4 py-3 font-semibold text-green-400">
                   {formatoColones(Number(p.monto))}
                 </td>
               </tr>

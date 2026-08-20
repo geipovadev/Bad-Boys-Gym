@@ -141,7 +141,7 @@ export default function MiembrosPage() {
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-neutral-800">
-        <table className="w-full text-left text-sm">
+        <table className="tabla-responsiva w-full text-left text-sm">
           <thead className="bg-neutral-900 text-neutral-400">
             <tr>
               <th className="px-4 py-3">Nombre</th>
@@ -157,26 +157,26 @@ export default function MiembrosPage() {
           <tbody>
             {filtrados.map((m) => (
               <tr key={m.id} className="border-t border-neutral-800 align-top">
-                <td className="px-4 py-3">
+                <td data-label="Nombre" className="px-4 py-3">
                   {m.nombre} {m.apellido}
                 </td>
-                <td className="px-4 py-3">
+                <td data-label="Contacto" className="px-4 py-3">
                   <div>{m.correo}</div>
                   <div className="text-neutral-500">{m.whatsapp}</div>
                 </td>
-                <td className="px-4 py-3">
+                <td data-label="Sede" className="px-4 py-3">
                   {sedes.find((s) => s.id === m.sede_id)?.nombre ?? "—"}
                 </td>
-                <td className="px-4 py-3">{planes[m.plan_id]?.nombre ?? "—"}</td>
-                <td className="px-4 py-3">
+                <td data-label="Plan" className="px-4 py-3">{planes[m.plan_id]?.nombre ?? "—"}</td>
+                <td data-label="Pago" className="px-4 py-3">
                   <div className="capitalize">{m.metodo_pago}</div>
                   <div className="text-neutral-500">{m.estado_pago}</div>
                 </td>
-                <td className="px-4 py-3">{m.fecha_vencimiento ?? "—"}</td>
-                <td className="px-4 py-3">
+                <td data-label="Vence" className="px-4 py-3">{m.fecha_vencimiento ?? "—"}</td>
+                <td data-label="Estado" className="px-4 py-3">
                   <EstadoBadge estado={m.estado} />
                 </td>
-                <td className="px-4 py-3">
+                <td data-label="Acciones" className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     {m.estado_pago === "pendiente" && (
                       <button

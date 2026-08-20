@@ -157,6 +157,14 @@
     .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
   }
 
+  /* ── Área táctil en móvil ── */
+  @media(max-width:900px){
+    /* 24px de alto es poco para el dedo. El padding la sube
+       a ~40px sin mover el diseño, porque el gap ya daba el espaciado. */
+    .footer-links a:not([style*="background"]){display:block;padding:8px 0;margin:-8px 0}
+    .footer-bottom a{display:inline-block;padding:8px 0}
+  }
+
   /* ── Mobile (≤ 500px) ── */
   @media(max-width:500px){
     .hero-section{padding:36px 16px 0}
@@ -681,7 +689,7 @@
     </div>
     <div>
       <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:1px">Menú</div>
-      <div style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
+      <div class="footer-links" style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
         <a href="#" style="color:#cfc4bb">Inicio</a>
         <a href="#nosotros" style="color:#cfc4bb">Nosotros</a>
         <a href="#servicios" style="color:#cfc4bb">Servicios</a>
@@ -691,7 +699,7 @@
     </div>
     <div>
       <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:1px">Horario</div>
-      <div style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
+      <div class="footer-links" style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
         <span>Lun – Vie<br><span style="color:#f5f1ee;font-weight:600">7:00am – 12:00md<br>2:00pm – 9:00pm</span></span>
         <span>Sábado<br><span style="color:#f5f1ee;font-weight:600">7:00am – 12:00md</span></span>
         <span>Domingo<br><span style="color:#5a4a40">Cerrado</span></span>
@@ -699,7 +707,7 @@
     </div>
     <div>
       <div style="font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:1px">Contacto</div>
-      <div style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
+      <div class="footer-links" style="display:flex;flex-direction:column;gap:22px;margin-top:30px;color:#cfc4bb;font-size:16px">
         <span>📞 +506 6110 1582 · Gaudy</span>
         <span>📍 Campo 5 y Palmitas</span>
         <a href="#planes" style="display:inline-flex;align-items:center;gap:10px;background:#D2042D;color:#120c0a;font-weight:700;font-size:14px;padding:12px 20px;border-radius:40px;margin-top:8px">Únete ahora ↗</a>

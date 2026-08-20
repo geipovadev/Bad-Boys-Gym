@@ -203,7 +203,7 @@ export default function InstructoresPage() {
 
       <h2 className="mb-3 text-lg font-semibold">Instructores registrados</h2>
       <div className="overflow-x-auto rounded-xl border border-neutral-800">
-        <table className="w-full text-left text-sm">
+        <table className="tabla-responsiva w-full text-left text-sm">
           <thead className="bg-neutral-900 text-neutral-400">
             <tr>
               <th className="px-4 py-3">Nombre</th>
@@ -215,10 +215,10 @@ export default function InstructoresPage() {
           <tbody>
             {instructores.map((i) => (
               <tr key={i.id} className="border-t border-neutral-800">
-                <td className="px-4 py-3">{i.nombre}</td>
-                <td className="px-4 py-3 text-neutral-400">{i.username}</td>
-                <td className="px-4 py-3">{sedeNombre(i.sede_id)}</td>
-                <td className="px-4 py-3">
+                <td data-label="Nombre" className="px-4 py-3">{i.nombre}</td>
+                <td data-label="Usuario" className="px-4 py-3 text-neutral-400">{i.username}</td>
+                <td data-label="Sede" className="px-4 py-3">{sedeNombre(i.sede_id)}</td>
+                <td data-label="Acciones" className="px-4 py-3">
                   <button
                     disabled={busyId === i.id}
                     onClick={() => handleEliminar(i)}

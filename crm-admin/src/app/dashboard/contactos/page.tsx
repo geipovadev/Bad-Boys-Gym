@@ -93,7 +93,7 @@ export default function ContactosPage() {
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-neutral-800">
-        <table className="w-full text-left text-sm">
+        <table className="tabla-responsiva w-full text-left text-sm">
           <thead className="bg-neutral-900 text-neutral-400">
             <tr>
               <th className="px-4 py-3">Nombre</th>
@@ -107,8 +107,8 @@ export default function ContactosPage() {
           <tbody>
             {filtrados.map((c) => (
               <tr key={c.id} className="border-t border-neutral-800">
-                <td className="px-4 py-3">{c.nombre}</td>
-                <td className="px-4 py-3">
+                <td data-label="Nombre" className="px-4 py-3">{c.nombre}</td>
+                <td data-label="WhatsApp" className="px-4 py-3">
                   <a
                     href={`https://wa.me/${c.whatsapp.replace(/\D/g, "")}`}
                     target="_blank"
@@ -118,16 +118,16 @@ export default function ContactosPage() {
                     {c.whatsapp}
                   </a>
                 </td>
-                <td className="px-4 py-3 text-neutral-400">{c.correo ?? "—"}</td>
-                <td className="px-4 py-3">
+                <td data-label="Correo" className="px-4 py-3 text-neutral-400">{c.correo ?? "—"}</td>
+                <td data-label="Origen" className="px-4 py-3">
                   <span
                     className={`rounded-full px-2.5 py-1 text-xs font-semibold ${ORIGEN_ESTILO[c.origen]}`}
                   >
                     {ORIGEN_TEXTO[c.origen]}
                   </span>
                 </td>
-                <td className="px-4 py-3">{sedeNombre(c.sede_id)}</td>
-                <td className="px-4 py-3 text-neutral-400">
+                <td data-label="Sede" className="px-4 py-3">{sedeNombre(c.sede_id)}</td>
+                <td data-label="Fecha" className="px-4 py-3 text-neutral-400">
                   {new Date(c.created_at).toLocaleDateString("es-CR")}
                 </td>
               </tr>

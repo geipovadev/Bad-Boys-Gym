@@ -192,7 +192,7 @@ export default function DashboardPage() {
 
       <h2 className="mb-3 text-lg font-semibold">Últimos registros</h2>
       <div className="overflow-x-auto rounded-xl border border-neutral-800">
-        <table className="w-full text-left text-sm">
+        <table className="tabla-responsiva w-full text-left text-sm">
           <thead className="bg-neutral-900 text-neutral-400">
             <tr>
               <th className="px-4 py-3">Nombre</th>
@@ -204,12 +204,12 @@ export default function DashboardPage() {
           <tbody>
             {recientes.map((m) => (
               <tr key={m.id} className="border-t border-neutral-800">
-                <td className="px-4 py-3">
+                <td data-label="Nombre" className="px-4 py-3">
                   {m.nombre} {m.apellido}
                 </td>
-                <td className="px-4 py-3">{m.whatsapp}</td>
-                <td className="px-4 py-3 capitalize">{m.metodo_pago}</td>
-                <td className="px-4 py-3">
+                <td data-label="WhatsApp" className="px-4 py-3">{m.whatsapp}</td>
+                <td data-label="Método de pago" className="px-4 py-3 capitalize">{m.metodo_pago}</td>
+                <td data-label="Estado" className="px-4 py-3">
                   <EstadoBadge estado={m.estado} />
                 </td>
               </tr>

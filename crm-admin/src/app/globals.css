@@ -35,3 +35,71 @@ html.light {
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ---------------------------------------------------------------
+   Tablas responsivas.
+
+   Bajo 640px cada fila se convierte en una tarjeta y cada celda
+   muestra el encabezado de su columna desde data-label. Evita el
+   arrastre lateral en tablas de 6 y 8 columnas, que en un celular
+   es casi inusable.
+   --------------------------------------------------------------- */
+@media (max-width: 639px) {
+  .tabla-responsiva thead {
+    display: none;
+  }
+
+  .tabla-responsiva,
+  .tabla-responsiva tbody,
+  .tabla-responsiva tr,
+  .tabla-responsiva td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla-responsiva tr {
+    padding: 0.75rem 0.25rem;
+  }
+
+  /* Grid en vez de flex: así una celda con dos datos (correo y teléfono)
+     los apila en la columna del valor en vez de ponerlos lado a lado. */
+  .tabla-responsiva td {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.15rem 1rem;
+    align-items: start;
+    padding: 0.3rem 0.75rem;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  .tabla-responsiva td::before {
+    content: attr(data-label);
+    grid-column: 1;
+    grid-row: 1;
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-neutral-500);
+    padding-top: 0.15rem;
+  }
+
+  /* justify-self evita que un badge o un botón se estire a todo el ancho:
+     los elementos de grid se expanden por defecto. */
+  .tabla-responsiva td > * {
+    grid-column: 2;
+    justify-self: end;
+  }
+
+  /* Celdas sin etiqueta (estado vacío) ocupan todo el ancho. */
+  .tabla-responsiva td[data-label=""]::before,
+  .tabla-responsiva td:not([data-label])::before {
+    content: none;
+  }
+
+  /* Los botones de acción quedan alineados a la derecha y con aire. */
+  .tabla-responsiva td[data-label="Acciones"] > div {
+    justify-content: flex-end;
+  }
+}

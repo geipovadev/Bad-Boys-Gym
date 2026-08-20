@@ -107,7 +107,7 @@ export default function SesionesPage() {
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-neutral-800">
-        <table className="w-full text-left text-sm">
+        <table className="tabla-responsiva w-full text-left text-sm">
           <thead className="bg-neutral-900 text-neutral-400">
             <tr>
               <th className="px-4 py-3">Cuándo</th>
@@ -121,22 +121,22 @@ export default function SesionesPage() {
           <tbody>
             {filtradas.map((s) => (
               <tr key={s.id} className="border-t border-neutral-800 align-top">
-                <td className="px-4 py-3">
+                <td data-label="Cuándo" className="px-4 py-3">
                   <div>{formatoFecha(s.fecha)}</div>
                   <div className="text-neutral-500">{formatoHora(s.hora)}</div>
                 </td>
-                <td className="px-4 py-3">{s.nombre}</td>
-                <td className="px-4 py-3">
+                <td data-label="Nombre" className="px-4 py-3">{s.nombre}</td>
+                <td data-label="Contacto" className="px-4 py-3">
                   <div>{s.correo}</div>
                   <div className="text-neutral-500">{s.telefono}</div>
                 </td>
-                <td className="px-4 py-3">
+                <td data-label="Sede" className="px-4 py-3">
                   {sedes.find((x) => x.id === s.sede_id)?.nombre ?? "—"}
                 </td>
-                <td className="px-4 py-3">
+                <td data-label="Estado" className="px-4 py-3">
                   <EstadoBadge estado={s.estado} />
                 </td>
-                <td className="px-4 py-3">
+                <td data-label="Acciones" className="px-4 py-3">
                   {s.estado === "pendiente" && (
                     <div className="flex flex-wrap gap-2">
                       <button
